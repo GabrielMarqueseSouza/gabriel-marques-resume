@@ -1,2 +1,2 @@
-# gabriel-marques-resume
-This is my digital resume
+# My Digital Resume
+This file is yet to be completed
