@@ -1,9 +1,27 @@
-//---- global ----
+import { data } from './data.js';
+
+// ---------------- global -------------------
 const savedLang = localStorage.getItem('selectedLanguage');
 const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
 
-// ---- theme change ----
+const getCurrentLanguage = () => {
+  return langDiv.classList.contains('lang-pt') ? 'pt' : 'en';
+};
+
+const createElement = (el) => {
+  const element = document.createElement(el);
+  return element;
+};
+
+const createElements = (elList) => {
+  const elements = elList.map((el) => {
+    return document.createElement(el);
+  });
+
+  return elements;
+};
+
 const switchThemeBtn = document.getElementById('theme-switch');
 
 switchThemeBtn.addEventListener('change', () => {
@@ -15,41 +33,212 @@ if (localStorage.getItem('theme') === 'dark') {
   document.body.classList.add('dark');
   switchThemeBtn.checked = true;
 }
-// ---- theme change ----
+// ---------------- global -------------------
 
-//---- skills ----
-const skills = {
-  techSkills: [
-    { name: 'HTML', level: 2, role: ['frontend'] },
-    { name: 'CSS', level: 1, role: ['frontend'] },
-    { name: 'JavaScript', level: 3, role: ['frontend', 'backend'] },
-    { name: 'C#', level: 2, role: ['backend'] },
-    { name: '.NET', level: 2, role: ['backend'] },
-  ],
-  softSkills: {
-    en: [
-      { name: 'Communication', level: 3, role: ['softskills'] },
-      { name: 'Team work', level: 3, role: ['softskills'] },
-      { name: 'Commitment', level: 3, role: ['softskills'] },
-    ],
-    pt: [
-      { name: 'Comunicação', level: 3, role: ['softskills'] },
-      { name: 'Trabalho em equipe', level: 3, role: ['softskills'] },
-      { name: 'Comprometimento', level: 3, role: ['softskills'] },
-    ],
-  },
+// ---- navbar ----
+const navHome = document.getElementById('nav-home');
+const navAbout = document.getElementById('nav-about');
+const navEducation = document.getElementById('nav-education');
+const navSkills = document.getElementById('nav-skills');
+const navProjects = document.getElementById('nav-projects');
+const navContact = document.getElementById('nav-contactme');
+
+const getNavBarText = (language) => {
+  const translations =
+    language === 'pt' ? data.translations.pt : data.translations.en;
+
+  navHome.innerText = translations.home;
+  navAbout.innerText = translations.about;
+  navEducation.innerText = translations.education;
+  navSkills.innerText = translations.skills;
+  navProjects.innerText = translations.projects;
+  navContact.innerText = translations.getInTouch;
+};
+// ---- navbar ----
+
+// ---- hero ----
+const hero = document.getElementById('hero');
+const getHeroText = (language) => {
+  hero.innerHTML = '';
+  const [h3, firstP, secondP, scroll, scrollP, arrow, arrowSvg] =
+    createElements(['h3', 'p', 'p', 'div', 'p', 'div', 'svg']);
+
+  const translations =
+    language === 'pt'
+      ? data.translations.pt.heroSection
+      : data.translations.en.heroSection;
+
+  h3.innerText = translations.intro;
+  firstP.innerText = translations.firstParagraph;
+  secondP.innerText = translations.secondParagraph;
+  scrollP.innerText = translations.scroll;
+
+  scroll.className = 'scroll-down';
+  arrow.className = 'arrow';
+  arrowSvg.innerHTML = `<svg viewBox="0 0 30 30 " 
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 5.21875 6.6875 L 3.78125 8.09375 L 16 20.3125 L 28.21875 8.09375 L 26.78125 6.6875 L 16 17.46875 Z M 5.21875 13.6875 L 3.78125 15.09375 L 16 27.3125 L 28.21875 15.09375 L 26.78125 13.6875 L 16 24.46875 Z"
+              />
+            </svg>`;
+
+  arrow.appendChild(arrowSvg);
+  scroll.appendChild(scrollP);
+  scroll.appendChild(arrow);
+
+  hero.appendChild(h3);
+  hero.appendChild(firstP);
+  hero.appendChild(secondP);
+  hero.appendChild(scroll);
 };
 
+getHeroText(savedLang);
+// ---- hero ----
+
+// ---- about ----
+const aboutMe = document.getElementById('aboutme');
+const personalInfoText = document.getElementById('personalInfoText');
+const getAboutMeText = (language) => {
+  language === 'pt'
+    ? data.translations.pt.aboutMeText.forEach((p) => {
+        const pTag = createElement('p');
+        pTag.innerText = p.trim();
+        aboutMe.appendChild(pTag);
+      })
+    : data.translations.en.aboutMeText.forEach((p) => {
+        const pTag = createElement('p');
+        pTag.innerText = p.trim();
+        aboutMe.appendChild(pTag);
+      });
+};
+
+const getPersonalInfoText = (language) => {
+  language === 'pt'
+    ? data.translations.pt.personalInfoText.forEach((p) => {
+        const pTag = createElement('p');
+        pTag.innerText = p.trim();
+        personalInfoText.appendChild(pTag);
+      })
+    : data.translations.en.personalInfoText.forEach((p) => {
+        const pTag = createElement('p');
+        pTag.innerText = p.trim();
+        personalInfoText.appendChild(pTag);
+      });
+};
+// ---- about ----
+
+// ---- experience ----
+const experience = document.getElementById('experience');
+const professionContainer = document.querySelector('.profession-container');
+const educationContainer = document.querySelector('.education-container');
+
+const getExperience = (language) => {
+  const translations =
+    language === 'pt'
+      ? data.translations.pt.xpSection
+      : data.translations.en.xpSection;
+
+  const header = createElement('h2');
+  header.innerText = translations.headings[0];
+
+  professionContainer.appendChild(header);
+
+  translations.jobs.forEach((job) => {
+    const [card, role, company, summary, date] = createElements([
+      'article',
+      'p',
+      'p',
+      'p',
+      'p',
+    ]);
+
+    card.className = 'card';
+
+    role.className = 'role';
+    role.innerText = job.job;
+
+    company.className = 'company';
+    company.innerText = job.company;
+
+    summary.className = 'role-summary';
+    summary.innerText = job.summary;
+
+    date.className = 'start-end-date';
+    date.innerText = job.date;
+
+    card.appendChild(role);
+    card.appendChild(company);
+    card.appendChild(summary);
+    card.appendChild(date);
+
+    professionContainer.appendChild(card);
+  });
+
+  experience.appendChild(professionContainer);
+};
+
+const getEducation = (language) => {
+  const translations =
+    language === 'pt'
+      ? data.translations.pt.xpSection
+      : data.translations.en.xpSection;
+
+  const header = createElement('h2');
+  header.innerText = translations.headings[1];
+
+  educationContainer.appendChild(header);
+
+  translations.graduations.forEach((grad) => {
+    const [card, university, graduation, date] = createElements([
+      'article',
+      'p',
+      'p',
+      'p',
+    ]);
+
+    card.className = 'card';
+
+    university.className = 'university';
+    university.innerText = grad.university;
+
+    graduation.className = 'graduation-field';
+    graduation.innerText = grad.graduation;
+
+    date.className = 'graduation-date';
+    date.innerText = grad.gradDate;
+
+    card.appendChild(university);
+    card.appendChild(graduation);
+    card.appendChild(date);
+
+    educationContainer.appendChild(card);
+  });
+
+  experience.appendChild(educationContainer);
+};
+
+const setExperienceSection = (language) => {
+  experience.innerHTML = '';
+  professionContainer.innerHTML = '';
+  educationContainer.innerHTML = '';
+
+  getExperience(language);
+  getEducation(language);
+};
+
+setExperienceSection(savedLang);
+// ---- experience ----
+
+// ---- skills ----
 const skillsContainer = document.getElementById('skill-list-container');
 const skillBtns = document.querySelectorAll('.skill-btn');
+const skillHeader = document.querySelector('#skills h3');
 let selectedRole = 'all';
 
-const getCurrentLanguage = () => {
-  return langDiv.classList.contains('lang-pt') ? 'pt' : 'en';
-};
-
 const getSoftSkills = (language) => {
-  return language === 'pt' ? skills.softSkills.pt : skills.softSkills.en;
+  return language === 'pt'
+    ? data.skills.softSkills.pt
+    : data.skills.softSkills.en;
 };
 
 const getFilteredSkills = (roleFilter, language) => {
@@ -57,9 +246,11 @@ const getFilteredSkills = (roleFilter, language) => {
     return getSoftSkills(language);
   }
   if (roleFilter === 'all') {
-    return [...skills.techSkills, ...getSoftSkills(language)];
+    return [...data.skills.techSkills, ...getSoftSkills(language)];
   }
-  return skills.techSkills.filter((skill) => skill.role.includes(roleFilter));
+  return data.skills.techSkills.filter((skill) =>
+    skill.role.includes(roleFilter)
+  );
 };
 
 const observeSkillBars = () => {
@@ -85,25 +276,27 @@ const observeSkillBars = () => {
     .forEach((bar) => observer.observe(bar));
 };
 
-//skill filter
 const filterSkills = (roleFilter, language) => {
   skillsContainer.innerHTML = '';
+  skillBtns[0].innerHTML = language === 'pt' ? 'Todas' : 'All';
+  skillHeader.innerHTML =
+    language === 'pt' ? data.skills.title[1] : data.skills.title[0];
+
   const filteredSkills = getFilteredSkills(roleFilter, language);
 
   //create html/node tree for skills
   filteredSkills.forEach((skill) => {
-    const skillDiv = document.createElement('div');
+    const [skillDiv, name, levelBar] = createElements(['div', 'p', 'div']);
+
     skillDiv.className = 'skill';
 
-    const name = document.createElement('p');
     name.classList = 'skill-name';
     name.innerText = skill.name;
 
-    const levelBar = document.createElement('div');
     levelBar.className = 'skill-bar';
 
     for (let i = 1; i <= 3; i++) {
-      const segment = document.createElement('div');
+      const segment = createElement('div');
       segment.className = 'segment';
 
       if (i <= skill.level) {
@@ -132,43 +325,31 @@ skillBtns.forEach((button) => {
 });
 
 filterSkills('all', savedLang);
-//---- skills ----
+// ---- skills ----
 
 // ---- projects ----
-const projects = [
-  {
-    title: 'eLoad - Gestão de Carga de Treino',
-    description: {
-      en: `Application to monitor and evaluate athletes' performance,
-      facilitating analysis, helping to make decisions for
-      upcoming training sessions, improving athletes' performance 
-      and preventing injuries.`,
-      pt: `Aplicativo para monitorar e avaliar o desempenho dos atletas, 
-      facilitando a análise, ajudando a tomar decisões para
-      as próximas sessões de treinamento, melhorando o desempenho
-      dos atletas e prevenindo lesões.`,
-    },
-    imageUrl: './resources/brasil.svg',
-  },
-];
-
+const projectsHeader = document.querySelector('#projects h3');
 const projectsContainer = document.querySelector('.project-container');
 const renderProjects = (language) => {
   projectsContainer.innerHTML = '';
+  projectsHeader.innerHTML = language === 'pt' ? 'Projetos' : 'Projects';
 
-  projects.forEach((project) => {
-    const item = document.createElement('div');
+  data.projects.forEach((project) => {
+    const [item, imageTag, title, description] = createElements([
+      'div',
+      'img',
+      'p',
+      'p',
+    ]);
+
     item.className = 'project-item';
 
-    const imageTag = document.createElement('img');
     imageTag.className = 'project-logo';
     imageTag.src = project.imageUrl;
 
-    const title = document.createElement('p');
     title.classList = 'project-title';
     title.innerText = project.title;
 
-    const description = document.createElement('p');
     description.classList = 'project-description';
     description.innerText =
       language === 'pt' ? project.description.pt : project.description.en;
@@ -183,190 +364,93 @@ const renderProjects = (language) => {
 renderProjects(savedLang);
 // ---- projects ----
 
-//---- translations ----
-const myName = 'Gabriel Marques';
-const myAge = '28';
-const email = 'gabriel.marquesesouza@outlook.com';
-const phone = '+55 (31) 99662-5317';
-const address = {
-  city: 'Contagem',
-  state: 'Minas Gerais',
-  country: {
-    pt: 'Brasil',
-    en: 'Brazil',
-  },
-};
-const myCity = 'Contagem';
-const translations = {
-  en: {
-    home: 'Home',
-    about: 'About Me',
-    education: 'Education/Professional',
-    skills: 'Skills',
-    projects: 'Projects',
-    getInTouch: 'Get In Touch',
-    personalInfoText: [myName, 'Software Engineer', `${myAge} Years`],
-    aboutMeText: [
-      "I'm a Software Developer with a foundation and focus in full - stack development, and a passion for creating beautiful, maintainable, secure, and performance- oriented applications.",
-      "With hands-on experience working on national and international teams and projects, I've worked with technologies such as .NET, React, TypeScript, Docker, and Azure — both on the frontend and backend.",
-      'I enjoy working at the intersection of development, design, and product, utilizing data and metrics to inform decisions that yield the best possible user experience.',
-      'Along with development roles, my career also led me to work as a QA engineer, where I was at the forefront of automation initiatives that boosted deployment quality, and I have since then switched back to development, which is my truly passion - to build useful software always giving my best technical and collaborative skills.',
-      "I also hold a bachelor's degree in Law, and I'm currently pursuing a degree in Computer Science, continuously learning and enjoying turning complex challenges into clean, efficient solutions.",
-    ],
-  },
-  pt: {
-    home: 'Inicio',
-    about: 'Sobre',
-    education: 'Formação/Profissional',
-    skills: 'Habilidades',
-    projects: 'Projetos',
-    getInTouch: 'Fale Comigo',
-    personalInfoText: [myName, 'Engenheiro de Software', `${myAge} Anos`],
-    aboutMeText: [
-      'Sou um desenvolvedor de software com base e foco em desenvolvimento full-stack e uma paixão por criar aplicativos bonitos, fáceis de manter, seguros e orientados ao desempenho.',
-      'Com experiência prática trabalhando em equipes e projetos nacionais e internacionais, trabalhei com tecnologias como .NET, React, TypeScript, Docker e Azure, tanto no front-end quanto no back-end.',
-      'Gosto de trabalhar na interseção de desenvolvimento, design e produto, utilizando dados e métricas para informar decisões que geram a melhor experiência possível para o usuário.',
-      'Juntamente com as funções de desenvolvimento, minha carreira também me levou a trabalhar como engenheiro de controle de qualidade, onde estive na vanguarda das iniciativas de automação que aumentaram a qualidade da implantação. Desde então, voltei a trabalhar com desenvolvimento, que é minha verdadeira paixão: criar software útil, sempre dando o melhor de mim em termos de habilidades técnicas e de colaboração.',
-      'Também sou bacharel em Direito e atualmente estou me formando em Ciência da Computação, aprendendo continuamente e gostando de transformar desafios complexos em soluções limpas e eficientes.',
-    ],
-  },
+// ---- contact ----
+const getContactFormText = (language) => {
+  const translations =
+    language === 'pt'
+      ? data.translations.pt.contactForm
+      : data.translations.en.contactForm;
+
+  const contactFormText = document.querySelector('.contact-text');
+  contactFormText.children[0].innerText = translations.headings[0];
+  contactFormText.children[1].innerText = translations.headings[1];
+
+  const nameEmail = document.querySelectorAll('.name-email input');
+  nameEmail[0].placeholder = translations.placeHolders.name;
+  nameEmail[1].placeholder = translations.placeHolders.email;
+
+  const subject = document.querySelector('.subject input');
+  subject.placeholder = translations.placeHolders.subject;
+
+  const message = document.querySelector('.message textarea');
+  message.placeholder = translations.placeHolders.message;
+
+  const buttons = document.querySelector('.contact-btns');
+  buttons.children[0].innerText = translations.placeHolders.buttons[0];
+
+  buttons.children[1].innerText = language === 'pt' ? 'ou' : 'or';
+
+  buttons.children[2].innerText = translations.placeHolders.buttons[1];
 };
 
-const navHome = document.getElementById('nav-home');
-const navAbout = document.getElementById('nav-about');
-const navEducation = document.getElementById('nav-education');
-const navSkills = document.getElementById('nav-skills');
-const navProjects = document.getElementById('nav-projects');
-const navContact = document.getElementById('nav-contactme');
+getContactFormText(savedLang);
 
-const aboutMe = document.getElementById('aboutme');
-const personalInfoText = document.getElementById('personalInfoText');
-
-const getNavBarText = (language) => {
-  navHome.innerText =
-    language === 'pt' ? translations.pt.home : translations.en.home;
-  navAbout.innerText =
-    language === 'pt' ? translations.pt.about : translations.en.about;
-  navEducation.innerText =
-    language === 'pt' ? translations.pt.education : translations.en.education;
-  navSkills.innerText =
-    language === 'pt' ? translations.pt.skills : translations.en.skills;
-  navProjects.innerText =
-    language === 'pt' ? translations.pt.projects : translations.en.projects;
-  navContact.innerText =
-    language === 'pt' ? translations.pt.getInTouch : translations.en.getInTouch;
-};
-
-const getAboutMeText = (language) => {
-  language === 'pt'
-    ? translations.pt.aboutMeText.forEach((p) => {
-        const pTag = document.createElement('p');
-        pTag.innerText = p.trim();
-        aboutMe.appendChild(pTag);
-      })
-    : translations.en.aboutMeText.forEach((p) => {
-        const pTag = document.createElement('p');
-        pTag.innerText = p.trim();
-        aboutMe.appendChild(pTag);
-      });
-};
-
-const getPersonalInfoText = (language) => {
-  language === 'pt'
-    ? translations.pt.personalInfoText.forEach((p) => {
-        const pTag = document.createElement('p');
-        pTag.innerText = p.trim();
-        personalInfoText.appendChild(pTag);
-      })
-    : translations.en.personalInfoText.forEach((p) => {
-        const pTag = document.createElement('p');
-        pTag.innerText = p.trim();
-        personalInfoText.appendChild(pTag);
-      });
-};
-
-const setLanguage = (language) => {
-  aboutMe.innerHTML = '';
-  personalInfoText.innerHTML = '';
-
-  getNavBarText(language);
-  getAboutMeText(language);
-  getPersonalInfoText(language);
-};
-
-languages.forEach((language) => {
-  language.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    const lang = language.id;
-
-    langDiv.classList.remove('lang-pt', 'lang-en');
-    langDiv.classList.add(`lang-${lang}`);
-
-    setLanguage(lang);
-    filterSkills(selectedRole, getCurrentLanguage());
-    setContactInfo(getCurrentLanguage());
-    renderProjects(getCurrentLanguage());
-
-    localStorage.setItem('selectedLanguage', lang);
-  });
-});
-
-//---- contact info ----
+// -- available contacts --
 const contactSection = document.querySelector('.available-contacts');
 
 const generateTagsForContactInfo = () => {
-  const divider = document.createElement('div');
+  const [divider, icon, textContainer] = createElements(['div', 'div', 'div']);
+
   divider.className = 'divider';
-  const icon = document.createElement('div');
   icon.className = 'icon';
 
-  const textContainer = document.createElement('div');
   textContainer.className = 'text-container';
 
   return [divider, icon, textContainer];
 };
 
 const getPhoneInfo = (language) => {
-  [divider, icon, textContainer] = generateTagsForContactInfo();
-  const phoneSection = document.createElement('div');
-  phoneSection.className = 'phone';
+  const [divider, icon, textContainer] = generateTagsForContactInfo();
+  const [phoneSection, phoneNumber, phoneText] = createElements([
+    'div',
+    'p',
+    'p',
+  ]);
 
-  const phoneNumber = document.createElement('p');
-  phoneNumber.innerText = phone;
-  const phoneText = document.createElement('p');
+  phoneSection.className = 'phone';
+  phoneNumber.innerText = data.phone;
   phoneText.innerText = language === 'pt' ? 'Telefone' : 'Phone';
 
   textContainer.appendChild(phoneText);
   textContainer.appendChild(phoneNumber);
 
   icon.innerHTML = `<svg
-                  fill="#000000"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  viewBox="0 0 455.731 455.731"
-                  xml:space="preserve"
-                  data-darkreader-inline-fill=""
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <g>
-                      <path
-                        d="M228.071,95.321c-72.877,0-132.167,59.29-132.167,132.167c0,25.393,7.217,50.052,20.869,71.311l3.281,5.109l-12.855,45.658 l47.238-12.16l4.872,2.975c20.654,12.609,44.432,19.274,68.762,19.274c72.877,0,132.166-59.29,132.166-132.167 S300.948,95.321,228.071,95.321z M309.117,268.109l-1.649,7.702c-1.86,8.69-7.021,16.377-14.508,21.166 c-9.453,6.047-21.706,9.016-37.28,4.612c-48.333-13.667-75.667-45.667-90.333-65.667c-14.667-20-20.333-40-16.667-56.333 c2.459-10.954,10.465-19.359,15.472-23.708c2.453-2.13,5.635-3.214,8.878-3.037l10.328,0.563c2.034,0.111,3.828,1.367,4.629,3.24 l15.045,35.201c0.804,1.881,0.465,4.055-0.872,5.602l-13.096,15.15c-1.062,1.228-1.247,2.978-0.499,4.419 c17.248,33.224,48.682,46.389,58.066,49.687c1.599,0.562,3.371,0.031,4.407-1.312l13.703-17.764 c1.524-1.976,4.211-2.636,6.477-1.591l34.905,16.089C308.398,263.177,309.641,265.661,309.117,268.109z"
-                      ></path>
-                      <path
+  fill="#000000"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 455.731 455.731"
+  xml:space="preserve"
+  data-darkreader-inline-fill=""
+  >
+  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+  <g
+  id="SVGRepo_tracerCarrier"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  ></g>
+  <g id="SVGRepo_iconCarrier">
+  <g>
+  <path
+  d="M228.071,95.321c-72.877,0-132.167,59.29-132.167,132.167c0,25.393,7.217,50.052,20.869,71.311l3.281,5.109l-12.855,45.658 l47.238-12.16l4.872,2.975c20.654,12.609,44.432,19.274,68.762,19.274c72.877,0,132.166-59.29,132.166-132.167 S300.948,95.321,228.071,95.321z M309.117,268.109l-1.649,7.702c-1.86,8.69-7.021,16.377-14.508,21.166 c-9.453,6.047-21.706,9.016-37.28,4.612c-48.333-13.667-75.667-45.667-90.333-65.667c-14.667-20-20.333-40-16.667-56.333 c2.459-10.954,10.465-19.359,15.472-23.708c2.453-2.13,5.635-3.214,8.878-3.037l10.328,0.563c2.034,0.111,3.828,1.367,4.629,3.24 l15.045,35.201c0.804,1.881,0.465,4.055-0.872,5.602l-13.096,15.15c-1.062,1.228-1.247,2.978-0.499,4.419 c17.248,33.224,48.682,46.389,58.066,49.687c1.599,0.562,3.371,0.031,4.407-1.312l13.703-17.764 c1.524-1.976,4.211-2.636,6.477-1.591l34.905,16.089C308.398,263.177,309.641,265.661,309.117,268.109z"
+  ></path>
+  <path
                         style="fill: none"
                         d="M0,0v455.731h455.731V0H0z M228.071,386.655c-27.347,0-54.125-7-77.814-20.292L68.494,387.41l22.323-79.284 c-14.355-24.387-21.913-52.134-21.913-80.638c0-87.765,71.402-159.167,159.167-159.167s159.166,71.402,159.166,159.167 C387.237,315.253,315.836,386.655,228.071,386.655z"
-                      ></path>
-                    </g>
-                  </g>
-                    </svg>`;
+                        ></path>
+                        </g>
+                        </g>
+                        </svg>`;
 
   phoneSection.appendChild(icon);
   phoneSection.appendChild(textContainer);
@@ -375,14 +459,16 @@ const getPhoneInfo = (language) => {
 };
 
 const getEmailInfo = () => {
-  [divider, icon, textContainer] = generateTagsForContactInfo();
-  const emailSection = document.createElement('div');
-  emailSection.className = 'email';
+  const [divider, icon, textContainer] = generateTagsForContactInfo();
+  const [emailSection, emailText, emailAddress] = createElements([
+    'div',
+    'p',
+    'p',
+  ]);
 
-  const emailText = document.createElement('p');
+  emailSection.className = 'email';
   emailText.innerText = 'Email';
-  const emailAddress = document.createElement('p');
-  emailAddress.innerText = email;
+  emailAddress.innerText = data.email;
 
   textContainer.appendChild(emailText);
   textContainer.appendChild(emailAddress);
@@ -398,16 +484,15 @@ const getEmailInfo = () => {
 };
 
 const getAddressInfo = (language) => {
-  [divider, icon, textContainer] = generateTagsForContactInfo();
-  const addressSection = document.createElement('div');
+  const [divider, icon, textContainer] = generateTagsForContactInfo();
+  const [addressSection, city, country] = createElements(['div', 'p', 'p']);
+
   addressSection.className = 'address';
 
-  const city = document.createElement('p');
-  city.innerText = `${address.city}, ${address.state}`;
+  city.innerText = `${data.address.city}, ${data.address.state}`;
 
-  const country = document.createElement('p');
   country.innerText =
-    language === 'pt' ? address.country.pt : address.country.en;
+    language === 'pt' ? data.address.country.pt : data.address.country.en;
 
   textContainer.appendChild(city);
   textContainer.appendChild(country);
@@ -435,11 +520,45 @@ const setContactInfo = (language) => {
 };
 
 setContactInfo(savedLang);
-//---- contact info ----
+// -- available contacts --
+
+// ---- contact ----
+
+const setLanguage = (language) => {
+  aboutMe.innerHTML = '';
+  personalInfoText.innerHTML = '';
+
+  getNavBarText(language);
+  getAboutMeText(language);
+  getPersonalInfoText(language);
+  getHeroText(language);
+  setExperienceSection(language);
+  getContactFormText(language);
+};
+
+languages.forEach((language) => {
+  language.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const lang = language.id;
+
+    langDiv.classList.remove('lang-pt', 'lang-en');
+    langDiv.classList.add(`lang-${lang}`);
+
+    setLanguage(lang);
+    filterSkills(selectedRole, getCurrentLanguage());
+    setContactInfo(getCurrentLanguage());
+    renderProjects(getCurrentLanguage());
+    getHeroText(getCurrentLanguage());
+    setExperienceSection(getCurrentLanguage());
+    getContactFormText(getCurrentLanguage());
+
+    localStorage.setItem('selectedLanguage', lang);
+  });
+});
 
 if (savedLang) {
   setLanguage(savedLang);
   langDiv.classList.add(`lang-${savedLang}`);
   filterSkills(selectedRole, savedLang);
 }
-//---- translations ----
