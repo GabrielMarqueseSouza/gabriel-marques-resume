@@ -86,6 +86,7 @@ body {
   align-items: center;
   box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(80px);
+  z-index: 1;
 }
 
 .navbar-container {
@@ -454,7 +455,7 @@ body {
   background-color: #19191a;
   width: 100%;
   padding: 3rem 0;
-  margin: 200px 0;
+  margin: 150px 0;
   display: grid;
   grid-template-rows: auto auto;
   grid-template-columns: auto auto;
@@ -482,6 +483,7 @@ body {
       grid-area: professional;
     }
   }
+
   .education-container {
     h2 {
       grid-area: edu-header;
@@ -540,187 +542,375 @@ body {
 
 /* skills */
 #skills {
+  margin: 150px 0;
   display: flex;
-  margin-top: 10px;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: -20px 0 15px 0;
+  }
 
   .skills-container {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    row-gap: 15px;
-    padding: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
+    column-gap: 15px;
+    margin-bottom: 20px;
 
-  .detailed-skills-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    row-gap: 10px;
-    padding: 10px;
-    margin-left: 70px;
-  }
+    .skill-btn {
+      border-style: none;
+      border: 1px solid var(--secondary-font-color);
+      border-radius: 10px;
+      padding: 7px 25px;
+      color: var(--primary-font-color);
+      background-color: var(--dark-btn);
+      transition: background-color 0.4s ease-in-out;
 
-  .detailed-skills {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    column-gap: 25px;
-    padding: 10px;
-
-    ul {
-      list-style-type: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      &:hover {
+        background-color: var(--secondary-font-color);
+      }
     }
   }
 
-  .skill-name {
-    /* TODO - implement specific styling */
-  }
+  #skill-list-container {
+    width: 100%;
+    padding: 3rem 0;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto auto auto auto;
+    place-content: center center;
+    column-gap: 50px;
+    overflow-x: hidden;
 
-  .skill-level {
-    /* TODO - implement specific styling */
+    .skill {
+      margin-bottom: 1rem;
+      background-color: rgba(112, 112, 112, 0.2);
+      padding: 20px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+    }
+
+    .skill-name {
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .skill-bar {
+      display: flex;
+      gap: 4px;
+
+      &:hover {
+        .segment.filled {
+          box-shadow: 1px 1px 5px rgba(180, 109, 27, 1),
+            -1px -1px 5px rgba(180, 109, 27, 1);
+        }
+      }
+    }
+
+    .segment {
+      position: relative;
+      width: 60px;
+      height: 13px;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #ddd;
+      transition: background-color 0.4s ease-in-out, box-shadow 0.3s ease-in-out;
+
+      &.filled {
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 0%;
+          height: 100%;
+          background-color: rgba(180, 109, 27, 1);
+          transition: width 0.7s ease-in-out;
+          z-index: 1;
+        }
+
+        &.animate::before {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 /* skills */
 
 /* projects */
 #projects {
-  margin-top: 10px;
+  margin: 150px 0 0 0;
+  padding: 3rem 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  background-color: #19191a;
+  width: 100%;
 
-  h2 {
-    margin: 10px 0px;
+  h3 {
+    text-align: center;
+    font-size: 2.5rem;
+  }
+
+  .project-container {
+    margin: 25px 0 50px 0;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    overflow-y: auto;
+
+    .project-item {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      width: 600px;
+      height: 165px;
+      background-color: rgba(112, 112, 112, 0.2);
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-rows: auto auto;
+      place-content: start start;
+      padding: 20px;
+      margin: 10px;
+
+      .project-logo {
+        border: 2px solid rgba(9, 9, 9, 0.2);
+        border-radius: 10px;
+        grid-row: 1 / span 1;
+        width: 90px;
+        height: 90px;
+        margin-top: 10px;
+      }
+
+      .project-title {
+        grid-column: 2 / span 1;
+        margin: 5px 0px 80px 50px;
+      }
+
+      .project-description {
+        grid-column: 2 / span 1;
+        margin-left: 15px;
+        margin-top: -70px;
+        font-size: 0.85rem;
+      }
+    }
   }
 }
-
-.project-container {
-  display: grid;
-  padding: 10px;
-  gap: 10px;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-}
-
-.project-item {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  place-content: start start;
-  padding: 10px;
-  background-color: #110741;
-  width: 70%;
-
-  img {
-    border: 1px solid red;
-    border-radius: 10px;
-    grid-row: 1 / span 1;
-    width: 90px;
-    height: 90px;
-    margin-top: 10px;
-  }
-
-  .project-title {
-    grid-column: 2 / span 1;
-    margin-left: 50px;
-    margin-top: 5px;
-    height: fit-content;
-    width: fit-content;
-  }
-
-  .project-description {
-    grid-column: 2 / span 1;
-    margin-left: 15px;
-    margin-top: -70px;
-  }
-}
-
 /* projects */
 
 /* contact */
 #contact {
-  margin-top: 10px;
-}
-
-.contact-text {
-  margin-top: 10px;
-  margin-left: 15px;
-  padding: 5px;
-  width: fit-content;
-}
-
-.contact-form-container {
-  display: block;
-  position: relative;
-  width: 100%;
-}
-
-.contact-form {
-  display: grid;
-  padding: 10px;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-  place-content: center start;
-}
-
-.contact-info-left {
-  padding: 10px;
-  grid-column: 1 / span 1;
+  margin: 100px 0 100px 0;
+  padding: 30px;
   display: flex;
-  flex-direction: column;
-  justify-self: start;
-}
+  justify-content: center;
 
-.contact-info-right {
-  padding: 10px;
-  grid-column: 2 / span 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
+  p {
+    cursor: default;
+  }
 
-.contact-btns-container {
-  display: flex;
-  padding: 10px;
-  margin-top: 10px;
-  justify-content: flex-start;
-  align-items: flex-start;
-  grid-row: 2 / span 1;
-}
+  .contact-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 920px;
+    height: 100%;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 2px solid #222222;
+    padding: 1.5rem 0;
 
-.something-cool {
-  position: absolute;
-  right: 480px;
-  bottom: 75px;
-  padding: 20px;
-  text-align: center;
-}
+    .contact-text {
+      margin-bottom: 20px;
+      h3 {
+        margin-bottom: 10px;
+        font-size: 2rem;
+        text-align: center;
 
-.resume-download-btn {
-  margin-top: 20px;
-}
+        span {
+          color: var(--secondary-font-color);
+        }
+      }
 
+      p {
+        font-size: 1.2rem;
+        text-align: center;
+      }
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 30px;
+      width: 100%;
+
+      .name-email,
+      .subject,
+      .message {
+        display: flex;
+        column-gap: 30px;
+
+        input,
+        textarea {
+          border-style: none;
+          border: 1px solid transparent;
+          border-radius: 8px;
+          padding: 10px;
+          height: 40px;
+          transition: border-color 0.3s ease-in-out;
+          font-size: 1rem;
+          background-color: rgba(50, 50, 50, 1);
+
+          &::placeholder {
+            color: rgb(188, 188, 188);
+          }
+
+          &:focus,
+          &:hover {
+            outline: none;
+            border-color: rgba(180, 109, 27, 1);
+          }
+        }
+      }
+
+      .name-email {
+        input {
+          width: 400px;
+        }
+      }
+
+      .subject {
+        input {
+          width: 830px;
+        }
+      }
+
+      .message {
+        textarea {
+          width: 830px;
+          max-width: 830px;
+          min-height: 100px;
+          max-height: 300px;
+        }
+      }
+
+      .contact-btns {
+        display: flex;
+        padding: 12px;
+        justify-content: center;
+        align-items: center;
+        column-gap: 12px;
+
+        button {
+          border-style: none;
+          border: 1px solid var(--secondary-font-color);
+          border-radius: 8px;
+          padding: 15px 30px;
+          color: var(--primary-font-color);
+          background-color: var(--dark-btn);
+          transition: background-color 0.3s ease-in-out;
+
+          &:hover,
+          &:focus {
+            outline: none;
+            background-color: var(--secondary-font-color);
+          }
+        }
+      }
+    }
+  }
+
+  .available-contacts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    row-gap: 50px;
+    padding: 0 20px;
+    margin-left: 5px;
+
+    .divider {
+      width: 308px;
+      height: 1px;
+      border-radius: 100px;
+      background-color: rgba(255, 255, 255, 0.5);
+      position: absolute;
+    }
+
+    .phone,
+    .email,
+    .address {
+      display: flex;
+
+      .icon {
+        width: 50px;
+        height: 50px;
+        border: 1px solid white;
+        border-radius: 8px;
+        margin-right: 15px;
+        position: relative;
+
+        svg {
+          position: absolute;
+          fill: white;
+        }
+      }
+
+      .text-container {
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .phone,
+    .email {
+      position: relative;
+
+      .divider {
+        bottom: -27px;
+      }
+    }
+
+    .phone {
+      svg {
+        width: 42px;
+        height: 42px;
+        top: 2px;
+        left: 3px;
+      }
+    }
+
+    .email {
+      svg {
+        width: 38px;
+        height: 38px;
+        top: 5px;
+        left: 5px;
+      }
+    }
+
+    .address {
+      svg {
+        width: 36px;
+        height: 36px;
+        top: 6px;
+        left: 6px;
+      }
+    }
+  }
+}
 /* contact */
 
 footer {
-  padding: 10px;
+  padding: 20px;
   margin: 10px 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   box-shadow: 0 -4px 5px 1px rgba(0, 0, 0, 0.6);
-
-  a {
-    position: absolute;
-    right: 10px;
-  }
 }

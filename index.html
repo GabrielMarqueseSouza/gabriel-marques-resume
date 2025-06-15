@@ -196,126 +196,55 @@
         </section>
       </section>
       <section id="skills">
+        <h3>Skills</h3>
         <section class="skills-container">
-          <h3>Skills</h3>
-          <button class="skill-btn">All Skills</button>
-          <button class="skill-btn">Frontend</button>
-          <button class="skill-btn">Backend</button>
-          <button class="skill-btn">Devops (maybe this will change)</button>
-          <button class="skill-btn">Soft Skills</button>
+          <button id="all" class="skill-btn">All</button>
+          <button id="frontend" class="skill-btn">Frontend</button>
+          <button id="backend" class="skill-btn">Backend</button>
+          <button id="devops" class="skill-btn">
+            Devops (maybe this will change)
+          </button>
+          <button id="softskills" class="skill-btn">Soft Skills</button>
         </section>
-        <section class="detailed-skills-container">
-          <h3>Skill Proficiency</h3>
-          <section class="detailed-skills">
-            <div class="skill-name">
-              <ul>
-                <li>.Net - .Net Core:</li>
-                <li>NodeJS:</li>
-                <li>C#:</li>
-                <li>JavaScript:</li>
-              </ul>
-            </div>
-            <div class="skill-level">
-              <ul>
-                <li>skill level bar will be placed here</li>
-                <li>skill level bar will be placed here</li>
-                <li>skill level bar will be placed here</li>
-                <li>skill level bar will be placed here</li>
-              </ul>
-            </div>
-          </section>
-        </section>
+        <section id="skill-list-container"></section>
       </section>
       <section id="projects">
-        <h2>Projects</h2>
-        <section class="project-container">
-          <div class="project-item">
-            <img src="" alt="logo eload" />
-            <p class="project-title">eLoad - Gestão de Carga de Treino</p>
-            <p class="project-description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem rerum autem repellendus enim illo incidunt, voluptates
-              eius exercitationem quam omnis inventore nostrum. Accusantium,
-              provident cupiditate natus quis nulla a asperiores.
-            </p>
-          </div>
-          <div class="project-item">
-            <img src="" alt="logo eload" />
-            <p class="project-title">Project 2</p>
-            <p class="project-description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem rerum autem repellendus enim illo incidunt, voluptates
-              eius exercitationem quam omnis inventore nostrum. Accusantium,
-              provident cupiditate natus quis nulla a asperiores.
-            </p>
-          </div>
-          <div class="project-item">
-            <img src="" alt="logo eload" />
-            <p class="project-title">Project 3</p>
-            <p class="project-description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem rerum autem repellendus enim illo incidunt, voluptates
-              eius exercitationem quam omnis inventore nostrum. Accusantium,
-              provident cupiditate natus quis nulla a asperiores.
-            </p>
-          </div>
-          <div class="project-item">
-            <img src="" alt="logo eload" />
-            <p class="project-title">Project 4</p>
-            <p class="project-description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem rerum autem repellendus enim illo incidunt, voluptates
-              eius exercitationem quam omnis inventore nostrum. Accusantium,
-              provident cupiditate natus quis nulla a asperiores.
-            </p>
-          </div>
-        </section>
+        <h3>Projects</h3>
+        <section class="project-container"></section>
       </section>
       <section id="contact">
-        <div class="contact-text">
-          <h3>Get in touch, and together let's build something amazing!</h3>
-        </div>
         <section class="contact-form-container">
+          <div class="contact-text">
+            <h3>Let's work <span>together</span></h3>
+            <p>Fill the form bellow and I'll get back to you:</p>
+          </div>
           <form action="" class="contact-form">
-            <div class="contact-info-left">
-              <p>Subject:</p>
+            <div class="name-email">
+              <input type="text" placeholder="First and last name" required />
+              <input type="email" placeholder="Email address" required />
+            </div>
+            <div class="subject">
               <input type="text" placeholder="Subject" required />
-              <p>First and Last Name:</p>
-              <input type="text" placeholder="Your name" required />
-              <p>E-mail Address:</p>
-              <input type="email" placeholder="Your e-mail" required />
-
-              <p>Phone Number (optional):</p>
-              <input type="text" placeholder="Your phone number" />
             </div>
-            <div class="contact-info-right">
-              <p>Write a brief message about your contact reason:</p>
-              <textarea name="message-description"></textarea>
+            <div class="message">
+              <textarea
+                placeholder="Type your message here"
+                name="message-description"
+                maxlength="1000"
+              ></textarea>
             </div>
-            <div class="contact-btns-container">
+            <div class="contact-btns">
               <button type="submit">Send Email</button>
               <p>or</p>
               <button type="submit">Send Message</button>
             </div>
           </form>
-          <section class="something-cool">
-            <article>
-              <p>Wanna reference me for someone else?</p>
-              <p>
-                <a href="">Copy this portfolio link here</a> or download the
-                resume clicking below
-              </p>
-              <div class="resume-download-btn">
-                <button onclick="">Download Resume</button>
-              </div>
-            </article>
-          </section>
         </section>
+        <div class="available-contacts"></div>
       </section>
     </main>
     <footer>
       <p>2025, Gabriel Marques. All Rights Reserved.</p>
-      <a href="#">Return To Begin</a>
     </footer>
   </body>
 </html>
