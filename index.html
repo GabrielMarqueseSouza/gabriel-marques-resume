@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="scripts.js" defer></script>
+    <script src="script.js" defer></script>
     <title>Gabriel Marques - Software Developer</title>
   </head>
   <body class="portfolio-container">
@@ -33,7 +33,7 @@
       <section id="about">
         <aside class="information-container">
           <div class="profile-pic">
-            <img src="" alt="profile picture" />
+            <img src="/resources/profile-pic.jpg" alt="profile picture" />
           </div>
           <section class="social-media-icons">
             <div id="linkedin">
@@ -76,7 +76,10 @@
               </a>
             </div>
             <div id="whatsapp">
-              <a href="http://" target="_blank">
+              <a
+                href="https://wa.me/5531996625317?text=Olá, Gabriel!"
+                target="_blank"
+              >
                 <svg
                   fill="#000000"
                   version="1.1"
@@ -107,7 +110,10 @@
               </a>
             </div>
             <div id="instagram">
-              <a href="http://" target="_blank">
+              <a
+                href="https://www.instagram.com/marquess_gabriel/"
+                target="_blank"
+              >
                 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <linearGradient
@@ -155,45 +161,45 @@
       <section id="skills">
         <h3>Skills</h3>
         <section class="skills-container">
-          <button id="all" class="skill-btn">All</button>
+          <button id="all" class="skill-btn"></button>
           <button id="frontend" class="skill-btn">Frontend</button>
           <button id="backend" class="skill-btn">Backend</button>
-          <button id="devops" class="skill-btn">
-            Devops (maybe this will change)
-          </button>
+          <button id="devops" class="skill-btn">Devops | Database</button>
+          <button id="test" class="skill-btn"></button>
           <button id="softskills" class="skill-btn">Soft Skills</button>
+          <button id="tools" class="skill-btn"></button>
         </section>
         <section id="skill-list-container"></section>
       </section>
       <section id="projects">
-        <h3>Projects</h3>
+        <h3></h3>
         <section class="project-container"></section>
       </section>
       <section id="contact">
         <section class="contact-form-container">
           <div class="contact-text">
-            <h3>Let's work <span>together</span></h3>
-            <p>Fill the form bellow and I'll get back to you:</p>
+            <h3></h3>
+            <p></p>
           </div>
-          <form action="" class="contact-form">
+          <form action="#contact" class="contact-form">
             <div class="name-email">
-              <input type="text" placeholder="First and last name" required />
-              <input type="email" placeholder="Email address" required />
+              <input type="text" name="fullname" required />
+              <input type="email" name="email" required />
             </div>
             <div class="subject">
-              <input type="text" placeholder="Subject" required />
+              <input type="text" name="subject" required />
             </div>
             <div class="message">
-              <textarea
-                placeholder="Type your message here"
-                name="message-description"
-                maxlength="1000"
-              ></textarea>
+              <textarea name="message-description" maxlength="1000"></textarea>
             </div>
             <div class="contact-btns">
-              <button type="submit">Send Email</button>
-              <p>or</p>
-              <button type="submit">Send Message</button>
+              <button type="submit" onclick="sendMessage('email')">
+                Send Email
+              </button>
+              <p></p>
+              <button type="submit" onclick="sendMessage('whatsapp')">
+                Send Message
+              </button>
             </div>
           </form>
         </section>
@@ -201,7 +207,7 @@
       </section>
     </main>
     <footer>
-      <p>2025, Gabriel Marques. All Rights Reserved.</p>
+      <p></p>
     </footer>
   </body>
 </html>
