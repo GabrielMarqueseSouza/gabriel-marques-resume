@@ -83,15 +83,11 @@ const data = {
   projects: [
     {
       title: 'eLoad - Gestão de Carga de Treino',
+      type: 'Freelance',
+      url: 'https://eload.com.br/',
       description: {
-        en: `Monolithic ASP.NET Core MVC application to monitor and evaluate athletes' performance,
-        facilitating analysis, helping to make decisions for
-        upcoming training sessions, improving athletes' performance 
-        and preventing injuries.`,
-        pt: `Aplicativo monolito, ASP.NET Core MVC, para monitorar e avaliar o desempenho dos atletas, 
-        facilitando a análise, ajudando a tomar decisões para
-        as próximas sessões de treinamento, melhorando o desempenho
-        dos atletas e prevenindo lesões.`,
+        en: `Monolithic ASP.NET Core MVC application to monitor and evaluate athletes' performance,facilitating analysis, helping to make decisions forupcoming training sessions, improving athletes' performance and preventing injuries.`,
+        pt: `Aplicativo monolito, ASP.NET Core MVC, para monitorar e avaliar o desempenho dos atletas, facilitando a análise, ajudando a tomar decisões paraas próximas sessões de treinamento, melhorando o desempenhodos atletas e prevenindo lesões.`,
       },
       imageUrl: './resources/eload.ico',
     },
@@ -137,7 +133,7 @@ const data = {
           {
             job: 'Software Engineer',
             company: companies[0],
-            summary: 'Fullstack Development - React and .NET',
+            summary: 'Fullstack Development - React, .NET',
             date: 'Oct/2024 - Mai/2025',
           },
           {
@@ -262,6 +258,13 @@ const data = {
 const savedLang = localStorage.getItem('selectedLanguage');
 const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
+let selectedRole = 'all';
+
+const getTextTheme = () => {
+  const theme = localStorage.getItem('theme');
+
+  return theme === 'dark' ? 'text-white-gradient' : 'text-black-gradient';
+};
 
 const getCurrentLanguage = () => {
   return langDiv.classList.contains('lang-pt') ? 'pt' : 'en';
@@ -280,17 +283,71 @@ const createElements = (elList) => {
   return elements;
 };
 
+const getTheme = () => {
+  return localStorage.getItem('theme');
+};
+
+const systemPrefersDark = window.matchMedia(
+  '(prefers-colors-scheme: dark)'
+).matches;
+
 const switchThemeBtn = document.getElementById('theme-switch');
+
+const userTheme = getTheme();
+if (userTheme === 'dark' || (!userTheme && systemPrefersDark)) {
+  document.body.classList.add('dark');
+  switchThemeBtn.checked = true;
+}
 
 switchThemeBtn.addEventListener('change', () => {
   document.body.classList.toggle('dark', switchThemeBtn.checked);
   localStorage.setItem('theme', switchThemeBtn.checked ? 'dark' : 'light');
+
+  getHeroText(getCurrentLanguage());
+  getAboutMeText(getCurrentLanguage());
+  getPersonalInfoText(getCurrentLanguage());
+  filterSkills(selectedRole, getCurrentLanguage());
+  renderProjects(getCurrentLanguage());
+  getContactFormText(getCurrentLanguage());
+  setFooterText(getCurrentLanguage());
+  setExperienceSection(getCurrentLanguage(), getTextTheme());
+  setContactInfo(getCurrentLanguage());
 });
 
-if (localStorage.getItem('theme') === 'dark') {
-  document.body.classList.add('dark');
-  switchThemeBtn.checked = true;
-}
+const generateStars = () => {
+  const starsContainer = document.getElementById('stars-container');
+  const stars = Math.floor((window.innerWidth * window.innerHeight) / 20000);
+
+  const newStars = [];
+
+  for (let i = 0; i < stars; i++) {
+    newStars.push({
+      id: i,
+      size: Math.random() * 1 + 1,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      opacity: Math.random() * 0.5 + 0.5,
+      animationDuration: Math.random() * 5 + 2,
+    });
+  }
+
+  newStars.forEach((star) => {
+    const newStar = document.createElement('div');
+    newStar.className = 'star';
+    newStar.setAttribute('id', star.id);
+    newStar.style.width = `${star.size}px`;
+    newStar.style.height = `${star.size}px`;
+    newStar.style.left = `${star.x}%`;
+    newStar.style.top = `${star.y}%`;
+    newStar.style.opacity = star.opacity;
+    newStar.style.animation = `fadeIn ${star.animationDuration}s linear infinite`;
+
+    starsContainer.appendChild(newStar);
+  });
+};
+
+generateStars();
+
 // ---------------- global -------------------
 
 // ---- navbar ----
@@ -300,6 +357,21 @@ const navEducation = document.getElementById('nav-education');
 const navSkills = document.getElementById('nav-skills');
 const navProjects = document.getElementById('nav-projects');
 const navContact = document.getElementById('nav-contactme');
+const navLinks = document.querySelectorAll('.navbar-container a');
+
+let temporarilyDisableObserver = false;
+navLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    temporarilyDisableObserver = true;
+
+    setTimeout(() => {
+      temporarilyDisableObserver = false;
+    }, 500);
+
+    navLinks.forEach((l) => l.classList.remove('active'));
+    link.classList.add('active');
+  });
+});
 
 const getNavBarText = (language) => {
   const translations =
@@ -312,14 +384,47 @@ const getNavBarText = (language) => {
   navProjects.innerText = translations.projects;
   navContact.innerText = translations.getInTouch;
 };
+
+const sections = document.querySelectorAll('.content-container > section');
+const observeSections = () => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (temporarilyDisableObserver) return;
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          navLinks.forEach((link) => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').slice(1) === entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  sections.forEach((section) => {
+    observer.observe(section);
+  });
+};
+observeSections();
 // ---- navbar ----
 
 // ---- hero ----
 const hero = document.getElementById('hero');
 const getHeroText = (language) => {
   hero.innerHTML = '';
-  const [h3, firstP, secondP, scroll, scrollP, arrow, arrowSvg] =
-    createElements(['h3', 'p', 'p', 'div', 'p', 'div', 'svg']);
+  const [h3, paragraph, scroll, scrollP, arrow, arrowSvg] = createElements([
+    'h3',
+    'p',
+    'p',
+    'div',
+    'p',
+    'div',
+    'svg',
+  ]);
 
   const translations =
     language === 'pt'
@@ -327,8 +432,9 @@ const getHeroText = (language) => {
       : data.translations.en.heroSection;
 
   h3.innerText = translations.intro;
-  firstP.innerText = translations.firstParagraph;
-  secondP.innerText = translations.secondParagraph;
+  paragraph.className = getTextTheme();
+
+  paragraph.innerText = `${translations.firstParagraph} ${translations.secondParagraph}`;
   scrollP.innerText = translations.scroll;
 
   scroll.className = 'scroll-down';
@@ -345,8 +451,7 @@ const getHeroText = (language) => {
   scroll.appendChild(arrow);
 
   hero.appendChild(h3);
-  hero.appendChild(firstP);
-  hero.appendChild(secondP);
+  hero.appendChild(paragraph);
   hero.appendChild(scroll);
 };
 
@@ -354,32 +459,46 @@ getHeroText(savedLang);
 // ---- hero ----
 
 // ---- about ----
-const aboutMe = document.getElementById('aboutme');
 const personalInfoText = document.getElementById('personalInfoText');
+const aboutMe = document.getElementById('aboutme');
+
+const createParagraphs = (paragraph, className) => {
+  const pTag = createElement('p');
+
+  if (className) {
+    pTag.className = className;
+  }
+
+  pTag.innerText = paragraph.trim();
+  return pTag;
+};
+
 const getAboutMeText = (language) => {
+  aboutMe.innerHTML = '';
+
   language === 'pt'
     ? data.translations.pt.aboutMeText.forEach((p) => {
-        const pTag = createElement('p');
-        pTag.innerText = p.trim();
+        const pTag = createParagraphs(p, getTextTheme());
+
         aboutMe.appendChild(pTag);
       })
     : data.translations.en.aboutMeText.forEach((p) => {
-        const pTag = createElement('p');
-        pTag.innerText = p.trim();
+        const pTag = createParagraphs(p, getTextTheme());
+
         aboutMe.appendChild(pTag);
       });
 };
 
 const getPersonalInfoText = (language) => {
+  personalInfoText.innerHTML = '';
+
   language === 'pt'
     ? data.translations.pt.personalInfoText.forEach((p) => {
-        const pTag = createElement('p');
-        pTag.innerText = p.trim();
+        const pTag = createParagraphs(p, getTextTheme());
         personalInfoText.appendChild(pTag);
       })
     : data.translations.en.personalInfoText.forEach((p) => {
-        const pTag = createElement('p');
-        pTag.innerText = p.trim();
+        const pTag = createParagraphs(p, getTextTheme());
         personalInfoText.appendChild(pTag);
       });
 };
@@ -401,6 +520,8 @@ const getExperience = (language) => {
 
   professionContainer.appendChild(header);
 
+  const theme = getTextTheme();
+
   translations.jobs.forEach((job) => {
     const [card, role, company, summary, date] = createElements([
       'article',
@@ -412,16 +533,16 @@ const getExperience = (language) => {
 
     card.className = 'card';
 
-    role.className = 'role';
+    role.className = `role ${theme}`;
     role.innerText = job.job;
 
-    company.className = 'company';
+    company.className = `company ${theme}`;
     company.innerText = job.company;
 
-    summary.className = 'role-summary';
+    summary.className = `role-summary ${theme}`;
     summary.innerText = job.summary;
 
-    date.className = 'start-end-date';
+    date.className = `start-end-date ${theme}`;
     date.innerText = job.date;
 
     card.appendChild(role);
@@ -446,6 +567,8 @@ const getEducation = (language) => {
 
   educationContainer.appendChild(header);
 
+  const theme = getTextTheme();
+
   translations.graduations.forEach((grad) => {
     const [card, university, graduation, date] = createElements([
       'article',
@@ -456,13 +579,13 @@ const getEducation = (language) => {
 
     card.className = 'card';
 
-    university.className = 'university';
+    university.className = `university ${theme}`;
     university.innerText = grad.university;
 
-    graduation.className = 'graduation-field';
+    graduation.className = `graduation-field ${theme}`;
     graduation.innerText = grad.graduation;
 
-    date.className = 'graduation-date';
+    date.className = `graduation-date ${theme}`;
     date.innerText = grad.gradDate;
 
     card.appendChild(university);
@@ -489,9 +612,18 @@ setExperienceSection(savedLang);
 
 // ---- skills ----
 const skillsContainer = document.getElementById('skill-list-container');
-const skillBtns = document.querySelectorAll('.skill-btn');
+const skillBtns = document.querySelectorAll('.btn');
 const skillHeader = document.querySelector('#skills h3');
-let selectedRole = 'all';
+
+skillBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    skillBtns.forEach((btn) => btn.classList.remove('active'));
+    btn.classList.add('active');
+
+    selectedRole = btn.id.toLowerCase();
+    filterSkills(selectedRole, getCurrentLanguage());
+  });
+});
 
 const getSoftSkills = (language) => {
   return language === 'pt'
@@ -526,7 +658,7 @@ const observeSkillBars = () => {
         }
       });
     },
-    { threshold: 0.4 }
+    { threshold: 0.5 }
   );
 
   document
@@ -552,7 +684,7 @@ const filterSkills = (roleFilter, language) => {
 
     skillDiv.className = 'skill';
 
-    name.classList = 'skill-name';
+    name.className = `skill-name ${getTextTheme()}`;
     name.innerText = skill.name;
 
     levelBar.className = 'skill-bar';
@@ -579,13 +711,6 @@ const filterSkills = (roleFilter, language) => {
   observeSkillBars();
 };
 
-skillBtns.forEach((button) => {
-  button.addEventListener('click', () => {
-    selectedRole = button.id.toLowerCase();
-    filterSkills(selectedRole, getCurrentLanguage());
-  });
-});
-
 filterSkills('all', savedLang);
 // ---- skills ----
 
@@ -597,10 +722,11 @@ const renderProjects = (language) => {
   projectsHeader.innerHTML = language === 'pt' ? 'Projetos' : 'Projects';
 
   data.projects.forEach((project) => {
-    const [item, imageTag, title, description] = createElements([
+    const [item, imageTag, title, iconSvg, description] = createElements([
       'div',
       'img',
       'p',
+      'div',
       'p',
     ]);
 
@@ -609,15 +735,39 @@ const renderProjects = (language) => {
     imageTag.className = 'project-logo';
     imageTag.src = project.imageUrl;
 
-    title.classList = 'project-title';
-    title.innerText = project.title;
+    title.className = `project-title ${getTextTheme()}`;
+    title.innerHTML = `${project.title} - ${project.type}`;
 
-    description.classList = 'project-description';
+    iconSvg.innerHTML = `
+      <a href=${project.url} target="_blank">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_429_11072)">
+            <path d="M11 3.99994H4V17.9999C4 19.1045 4.89543 19.9999 6 19.9999H18C19.1046 19.9999 20 19.1045 20 17.9999V12.9999"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path d="M9 14.9999L20 3.99994"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path d="M15 3.99994H20V8.99994"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+        </svg>
+      </a>`;
+
+    description.classList = `project-description ${getTextTheme()}`;
     description.innerText =
       language === 'pt' ? project.description.pt : project.description.en;
 
     item.appendChild(imageTag);
     item.appendChild(title);
+    item.appendChild(iconSvg);
     item.appendChild(description);
     projectsContainer.appendChild(item);
   });
@@ -628,6 +778,7 @@ renderProjects(savedLang);
 
 // ---- contact ----
 const getContactFormText = (language) => {
+  const textTheme = getTextTheme();
   const translations =
     language === 'pt'
       ? data.translations.pt.contactForm
@@ -636,6 +787,7 @@ const getContactFormText = (language) => {
   const contactFormText = document.querySelector('.contact-text');
   contactFormText.children[0].innerText = translations.headings[0];
   contactFormText.children[1].innerText = translations.headings[1];
+  contactFormText.children[1].className = textTheme;
 
   const nameEmail = document.querySelectorAll('.name-email input');
   nameEmail[0].placeholder = translations.placeHolders.name;
@@ -651,6 +803,7 @@ const getContactFormText = (language) => {
   buttons.children[0].innerText = translations.placeHolders.buttons[0];
 
   buttons.children[1].innerText = language === 'pt' ? 'ou' : 'or';
+  buttons.children[1].className = textTheme;
 
   buttons.children[2].innerText = translations.placeHolders.buttons[1];
 };
@@ -665,8 +818,7 @@ const generateTagsForContactInfo = () => {
 
   divider.className = 'divider';
   icon.className = 'icon';
-
-  textContainer.className = 'text-container';
+  textContainer.className = `text-container ${getTextTheme()}`;
 
   return [divider, icon, textContainer];
 };
@@ -687,7 +839,6 @@ const getPhoneInfo = (language) => {
   textContainer.appendChild(phoneNumber);
 
   icon.innerHTML = `<svg
-  fill="#000000"
   version="1.1"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -707,12 +858,12 @@ const getPhoneInfo = (language) => {
   d="M228.071,95.321c-72.877,0-132.167,59.29-132.167,132.167c0,25.393,7.217,50.052,20.869,71.311l3.281,5.109l-12.855,45.658 l47.238-12.16l4.872,2.975c20.654,12.609,44.432,19.274,68.762,19.274c72.877,0,132.166-59.29,132.166-132.167 S300.948,95.321,228.071,95.321z M309.117,268.109l-1.649,7.702c-1.86,8.69-7.021,16.377-14.508,21.166 c-9.453,6.047-21.706,9.016-37.28,4.612c-48.333-13.667-75.667-45.667-90.333-65.667c-14.667-20-20.333-40-16.667-56.333 c2.459-10.954,10.465-19.359,15.472-23.708c2.453-2.13,5.635-3.214,8.878-3.037l10.328,0.563c2.034,0.111,3.828,1.367,4.629,3.24 l15.045,35.201c0.804,1.881,0.465,4.055-0.872,5.602l-13.096,15.15c-1.062,1.228-1.247,2.978-0.499,4.419 c17.248,33.224,48.682,46.389,58.066,49.687c1.599,0.562,3.371,0.031,4.407-1.312l13.703-17.764 c1.524-1.976,4.211-2.636,6.477-1.591l34.905,16.089C308.398,263.177,309.641,265.661,309.117,268.109z"
   ></path>
   <path
-                        style="fill: none"
-                        d="M0,0v455.731h455.731V0H0z M228.071,386.655c-27.347,0-54.125-7-77.814-20.292L68.494,387.41l22.323-79.284 c-14.355-24.387-21.913-52.134-21.913-80.638c0-87.765,71.402-159.167,159.167-159.167s159.166,71.402,159.166,159.167 C387.237,315.253,315.836,386.655,228.071,386.655z"
-                        ></path>
-                        </g>
-                        </g>
-                        </svg>`;
+  style="fill: none"
+  d="M0,0v455.731h455.731V0H0z M228.071,386.655c-27.347,0-54.125-7-77.814-20.292L68.494,387.41l22.323-79.284 c-14.355-24.387-21.913-52.134-21.913-80.638c0-87.765,71.402-159.167,159.167-159.167s159.166,71.402,159.166,159.167 C387.237,315.253,315.836,386.655,228.071,386.655z"
+  ></path>
+  </g>
+  </g>
+  </svg>`;
 
   phoneSection.appendChild(icon);
   phoneSection.appendChild(textContainer);
@@ -736,8 +887,10 @@ const getEmailInfo = () => {
   textContainer.appendChild(emailAddress);
 
   icon.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                   <path fill-rule="evenodd" clip-rule="evenodd" d="M3.75 5.25L3 6V18L3.75 18.75H20.25L21 18V6L20.25 5.25H3.75ZM4.5 7.6955V17.25H19.5V7.69525L11.9999 14.5136L4.5 7.6955ZM18.3099 6.75H5.68986L11.9999 12.4864L18.3099 6.75Z"/>
-                      </svg>`;
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M3.75 5.25L3 6V18L3.75 18.75H20.25L21 18V6L20.25 5.25H3.75ZM4.5
+                    7.6955V17.25H19.5V7.69525L11.9999 14.5136L4.5 7.6955ZM18.3099
+                    6.75H5.68986L11.9999 12.4864L18.3099 6.75Z"/>
+                    </svg>`;
 
   emailSection.appendChild(icon);
   emailSection.appendChild(textContainer);
@@ -760,13 +913,18 @@ const getAddressInfo = (language) => {
   textContainer.appendChild(country);
 
   icon.innerHTML = `<svg viewBox="0 0 32 32"
-    style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
-    version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
-    xmlns:serif="http://www.serif.com/" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g id="Layer1">
-  <path d="M16,2c-6.071,0 -11,4.929 -11,11c0,2.778 1.654,6.081 3.699,9.019c2.939,4.224 6.613,7.707 6.613,7.707c0.386,0.365 0.99,0.365 1.376,-0c0,-0 3.674,-3.483 6.613,-7.707c2.045,-2.938 3.699,-6.241 3.699,-9.019c0,-6.071 -4.929,-11 -11,-11Zm0,5.5c-3.036,0 -5.5,2.464 -5.5,5.5c0,3.036 2.464,5.5 5.5,5.5c3.036,-0 5.5,-2.464 5.5,-5.5c0,-3.036 -2.464,-5.5 -5.5,-5.5Zm0,2c1.932,0 3.5,1.568 3.5,3.5c0,1.932 -1.568,3.5 -3.5,3.5c-1.932,-0 -3.5,-1.568 -3.5,-3.5c0,-1.932 1.568,-3.5 3.5,-3.5Z"/>
-  </g>
-                        </svg>`;
+                    style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+                    version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:serif="http://www.serif.com/" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Layer1">
+                    <path d="M16,2c-6.071,0 -11,4.929 -11,11c0,2.778 1.654,6.081 3.699,9.019c2.939,
+                    4.224 6.613,7.707 6.613,7.707c0.386,0.365 0.99,0.365 1.376,-0c0,-0 3.674,-3.483 6.613,
+                    -7.707c2.045,-2.938 3.699,-6.241 3.699,-9.019c0,-6.071 -4.929,-11 -11,-11Zm0,5.5c-3.036,
+                    0 -5.5,2.464 -5.5,5.5c0,3.036 2.464,5.5 5.5,5.5c3.036,-0 5.5,-2.464 5.5,-5.5c0,-3.036 -2.464,
+                    -5.5 -5.5,-5.5Zm0,2c1.932,0 3.5,1.568 3.5,3.5c0,1.932 -1.568,3.5 -3.5,3.5c-1.932,-0 -3.5,
+                    -1.568 -3.5,-3.5c0,-1.932 1.568,-3.5 3.5,-3.5Z"/>
+                    </g>
+                    </svg>`;
 
   addressSection.appendChild(icon);
   addressSection.appendChild(textContainer);
@@ -783,7 +941,63 @@ const setContactInfo = (language) => {
 
 setContactInfo(savedLang);
 // -- available contacts --
+// ---- whatsapp and email buttons ----
+const form = document.querySelector('[data-form]');
+const inputs = document.querySelectorAll('[data-form-input]');
+const formBtns = form.querySelectorAll('[data-form-btn]');
 
+const checkFormValidity = () => {
+  const allFilled = Array.from(inputs).every(
+    (input) => input.value.trim() !== ''
+  );
+
+  formBtns.forEach((button) => (button.disabled = !allFilled));
+};
+
+checkFormValidity();
+
+inputs.forEach((input) => input.addEventListener('input', checkFormValidity));
+
+function sendMessage(channel) {
+  const name = document.querySelector('[name="fullname"]').value;
+  const email = document.querySelector('[name="email"]').value;
+  const subject = document.querySelector('[name="subject"]').value;
+  const message = document.querySelector('[name="message-description"]').value;
+
+  const language = getCurrentLanguage();
+
+  let formattedMessage = '';
+  if (language === 'pt') {
+    formattedMessage = `Olá! Me chamo ${name}!\nMeu email é ${email}\nQuero falar sobre ${subject}\n${message}`;
+  } else {
+    formattedMessage = `Hi! My name is ${name}!\nMy email is ${email}\nI wish to talk about ${subject}\n${message}`;
+  }
+
+  const encodedMessage = encodeURIComponent(formattedMessage);
+
+  if (channel === 'email') {
+    sendEmail(encodedMessage, subject);
+  } else {
+    sendWhatsAppMessage(encodedMessage);
+  }
+}
+
+function sendWhatsAppMessage(message) {
+  const phoneNumber = '5531996625317';
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+
+  // Open the WhatsApp URL in a new window or tab
+  window.open(whatsappURL, '_blank');
+}
+
+function sendEmail(body, subject) {
+  const mailtoLink = `mailto:${data.email}?subject=${encodeURIComponent(
+    subject
+  )}&body=${body}`;
+
+  window.location.href = mailtoLink;
+}
+// ---- whatsapp and email ----
 // ---- contact ----
 
 // ---- footer ----
@@ -792,6 +1006,7 @@ const setFooterText = (language) => {
     language === 'pt' ? 'Todos os direitos reservados' : 'All Rights Reserved';
 
   const footer = document.querySelector('footer');
+  footer.className = getTextTheme();
   footer.children[0].innerText = `2025, Gabriel Marques. ${text}.`;
 };
 // ---- footer ----
@@ -835,46 +1050,3 @@ if (savedLang) {
   langDiv.classList.add(`lang-${savedLang}`);
   filterSkills(selectedRole, savedLang);
 }
-
-// ---- whatsapp and email ----
-
-function sendMessage(channel) {
-  const name = document.querySelector('[name="fullname"]').value;
-  const email = document.querySelector('[name="email"]').value;
-  const subject = document.querySelector('[name="subject"]').value;
-  const message = document.querySelector('[name="message-description"]').value;
-
-  const language = getCurrentLanguage();
-
-  let formattedMessage = '';
-  if (language === 'pt') {
-    formattedMessage = `Olá! Me chamo ${name}!\nMeu email é ${email}\nQuero falar sobre ${subject}\n${message}`;
-  } else {
-    formattedMessage = `Hi! My name is ${name}!\nMy email is ${email}\nI wish to talk about ${subject}\n${message}`;
-  }
-
-  const encodedMessage = encodeURIComponent(formattedMessage);
-
-  if (channel === 'email') {
-    sendEmail(encodedMessage, subject);
-  } else {
-    sendWhatsAppMessage(encodedMessage);
-  }
-}
-
-function sendWhatsAppMessage(message) {
-  const phoneNumber = '5531996625317';
-  const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
-
-  // Open the WhatsApp URL in a new window or tab
-  window.open(whatsappURL, '_blank');
-}
-
-function sendEmail(body, subject) {
-  const mailtoLink = `mailto:${data.email}?subject=${encodeURIComponent(
-    subject
-  )}&body=${body}`;
-
-  window.location.href = mailtoLink;
-}
-// ---- whatsapp and email ----

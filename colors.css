@@ -1,0 +1,83 @@
+:root {
+  --linkedin-bg: rgb(10, 102, 194, 0.9);
+  --github-bg: rgb(24, 23, 23, 0.9);
+  --whatsapp-bg: rgb(37, 211, 102, 0.9);
+  --instagram-bg: rgb(193, 53, 132, 0.9);
+  --text-bg-white-gradient: -webkit-linear-gradient(105deg, #cecece, #ffffff);
+  --text-bg-black-gradient: -webkit-linear-gradient(105deg, #000000, #1d1d1d);
+  --default-b-r: 10px;
+  --sun-icon: url('data:image/svg+xml;utf8,<svg id="bright" fill="rgb(254, 159, 0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M450-751.54v-147.69h60v147.69h-60Zm242.92 100.77-41.15-41.15 103.15-106.54 42.54 43.15-104.54 104.54ZM751.54-450v-60h147.69v60H751.54ZM450-60.77v-147.31h60v147.31h-60ZM267.85-652.38 161.54-754.92l43.54-42.16 104.54 104.16-41.77 40.54Zm486.46 490.84L651.77-268.08l40.54-40.15 104.77 101.92-42.77 44.77ZM60.77-450v-60h147.69v60H60.77Zm143.92 288.46-41.77-43.54 103.16-103.15 21.69 20.46 22.08 21.08-105.16 105.15ZM480.09-260q-91.63 0-155.86-64.14Q260-388.28 260-479.91q0-91.63 64.14-155.86Q388.28-700 479.91-700q91.63 0 155.86 64.14Q700-571.72 700-480.09q0 91.63-64.14 155.86Q571.72-260 480.09-260Z"/></svg>');
+  --moon-icon: url('data:image/svg+xml;utf8,<svg id="dark" fill="rgb(12, 49, 122)" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M481.15-140q-141.66 0-240.83-99.17-99.16-99.16-99.16-240.83 0-135.77 92.11-232.88 92.11-97.12 225.57-105.2 8.62 0 16.93.62 8.3.62 16.3 1.85-30.61 28.61-48.76 69.15-18.16 40.54-18.16 86.46 0 98.33 68.84 167.17Q562.82-424 661.15-424q46.54 0 86.77-18.15 40.23-18.16 68.46-48.77 1.23 8 1.85 16.31.61 8.3.61 16.92-7.69 133.46-104.8 225.57Q616.92-140 481.15-140Z"/></svg>');
+  --disabled-btns-color: #f5f5f5;
+
+  --primary-text-color: #f5f5f5;
+  --secondary-text-color: #1d1d1d;
+  --primary-blue: #c2d4f0;
+  --secondary-blue: #afcfff;
+  --tertiary-blue: #87a2c9;
+  --navbar-footer-bg-color: #fcfcfc;
+  --navbar-shadow: 0 1px 5px 1px #d4e5ff;
+  --footer-shadow: 0 -1px 5px 1px #d4e5ff;
+  --primary-bg-color: linear-gradient(#f2f2fc, #d6e6ff 20%, #f2f2fc 90%);
+  --secondary-bg-color: linear-gradient(
+    135deg,
+    #fff,
+    var(--primary-blue) 50%,
+    #fff 95%
+  );
+  --form-fields-hover-bg-color: var(--tertiary-blue);
+  --headings-color: -webkit-linear-gradient(#415161, #111);
+  --cards-linear-gradient: linear-gradient(
+    145deg,
+    var(--secondary-blue) 0%,
+    #e8eaee 40%,
+    var(--secondary-blue) 95%
+  );
+  --cards-border-color: var(--tertiary-blue);
+  --navbar-border-color: var(--secondary-blue);
+  --link-btn-hover-color: var(--primary-blue);
+  --btns-bg-color: #fff;
+
+  --skill-segment-bg: var(--cards-linear-gradient);
+  --first-skill-gradient: linear-gradient(90deg, #77889b, #3768a1);
+  --second-skill-gradient: linear-gradient(90deg, #3768a1, #3280da);
+  --third-skill-gradient: linear-gradient(90deg, #3280da, #1783ff);
+  --projects-logo-bg: rgba(255, 255, 255, 0.5);
+}
+
+.dark {
+  --primary-text-color: #0a0a0a;
+  --secondary-text-color: #fcfcfc;
+  --primary-blue: #001636;
+  --secondary-blue: #00245a;
+  --tertiary-blue: #1b3255;
+  --navbar-footer-bg-color: #111112;
+  --navbar-shadow: 0 1px 5px 1px black;
+  --footer-shadow: 0 -1px 5px 1px black;
+  --primary-bg-color: linear-gradient(
+    #0a0b0e,
+    var(--primary-blue) 50%,
+    #0a0b0e 70%
+  );
+  --secondary-bg-color: linear-gradient(135deg, black, #00183b 50%, black 95%);
+  --form-fields-hover-bg-color: var(--tertiary-blue);
+  --headings-color: -webkit-linear-gradient(#fff, #38495a);
+  --cards-linear-gradient: linear-gradient(
+    145deg,
+    #00183b,
+    black 50%,
+    #000d1f 75%,
+    #00183b 90%
+  );
+
+  --cards-border-color: var(--tertiary-blue);
+  --navbar-border-color: var(--secondary-blue);
+  --link-btn-hover-color: var(--secondary-blue);
+  --btns-bg-color: #000307;
+
+  --skill-segment-bg: var(--cards-linear-gradient);
+  --first-skill-gradient: linear-gradient(90deg, #ddd4f1, #784ae6);
+  --second-skill-gradient: linear-gradient(90deg, #784ae6, #4714bd);
+  --third-skill-gradient: linear-gradient(90deg, #4714bd, #4000d6);
+  --projects-logo-bg: rgba(20, 20, 20, 0.4);
+}
