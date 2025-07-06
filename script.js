@@ -5,6 +5,7 @@ const companies = [
   'dti digital',
   'Four - Buy Now Pay Later',
   'Catalde Technology',
+  'Secretaria de Estado de Governo - SEGOV | MG',
 ];
 const university = 'Centro Universitario UNA';
 
@@ -132,6 +133,12 @@ const data = {
         jobs: [
           {
             job: 'Software Engineer',
+            company: companies[3],
+            summary: 'Fullstack Development - PHP, VueJS',
+            date: 'Jun/2025 - Current',
+          },
+          {
+            job: 'Software Engineer',
             company: companies[0],
             summary: 'Fullstack Development - React, .NET',
             date: 'Oct/2024 - Mai/2025',
@@ -204,9 +211,15 @@ const data = {
         headings: ['Experiência Profissional', 'Educação'],
         jobs: [
           {
+            job: 'Software Engineer',
+            company: companies[3],
+            summary: 'Desenvolvimento FullStack - PHP, VueJS',
+            date: 'Jun/2025 - Atual',
+          },
+          {
             job: 'Engenheiro de Software',
             company: companies[0],
-            summary: 'Fullstack Development - React, .NET',
+            summary: 'Desenvolvimento FullStack - React, .NET',
             date: 'Out/2024 - Mai/2025',
           },
           {
@@ -288,7 +301,7 @@ const getTheme = () => {
 };
 
 const systemPrefersDark = window.matchMedia(
-  '(prefers-colors-scheme: dark)'
+  '(prefers-color-scheme: dark)'
 ).matches;
 
 const switchThemeBtn = document.getElementById('theme-switch');
@@ -302,6 +315,11 @@ if (userTheme === 'dark' || (!userTheme && systemPrefersDark)) {
 switchThemeBtn.addEventListener('change', () => {
   document.body.classList.toggle('dark', switchThemeBtn.checked);
   localStorage.setItem('theme', switchThemeBtn.checked ? 'dark' : 'light');
+
+  document.body.classList.add('fade-theme');
+  setTimeout(() => {
+    document.body.classList.remove('fade-theme');
+  }, 700);
 
   getHeroText(getCurrentLanguage());
   getAboutMeText(getCurrentLanguage());
