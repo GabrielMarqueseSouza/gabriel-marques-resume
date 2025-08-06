@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="The personal website and portfolio of the Software Engineer Gabriel Marques."
+    />
     <link rel="stylesheet" href="colors.css" />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
@@ -11,6 +15,11 @@
 
   <body class="portfolio-container">
     <header id="home">
+      <button class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <nav class="navbar-container">
         <a href="#" id="nav-home">Home</a>
         <a href="#about" id="nav-about">About Me</a>
@@ -36,13 +45,18 @@
       <section id="about">
         <aside class="information-container">
           <div class="profile-pic">
-            <img src="/resources/profile-pic.jpg" alt="profile picture" />
+            <img
+              src="/resources/profile-pic.jpg"
+              alt="profile picture"
+              loading="lazy"
+            />
           </div>
           <section class="social-media-icons">
             <div id="linkedin">
               <a
                 href="https://www.linkedin.com/in/gabrielmarquesesouza/"
                 target="_blank"
+                aria-label="LinkedIn Profile"
               >
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -52,7 +66,11 @@
               </a>
             </div>
             <div id="github">
-              <a href="https://github.com/GabrielMarqueseSouza" target="_blank">
+              <a
+                href="https://github.com/GabrielMarqueseSouza"
+                target="_blank"
+                aria-label="Github Profile"
+              >
                 <svg
                   viewBox="0 0 73 73"
                   version="1.1"
@@ -76,6 +94,7 @@
               <a
                 href="https://wa.me/5531996625317?text=Olá, Gabriel!"
                 target="_blank"
+                aria-label="Whatsapp Link"
               >
                 <svg
                   fill="#000000"
@@ -110,6 +129,7 @@
               <a
                 href="https://www.instagram.com/marquess_gabriel/"
                 target="_blank"
+                aria-label="Instagram Profile"
               >
                 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                   <!-- <defs>
@@ -176,7 +196,7 @@
             <h3></h3>
             <p></p>
           </div>
-          <form action="#contact" class="contact-form" data-form="">
+          <form class="contact-form" data-form="">
             <div class="name-email">
               <input type="text" name="fullname" data-form-input="" required />
               <input type="email" name="email" data-form-input="" required />
@@ -195,7 +215,7 @@
             <div class="contact-btns">
               <button
                 class="btn"
-                type="submit"
+                type="button"
                 onclick="sendMessage('email')"
                 data-form-btn=""
               >
@@ -204,7 +224,7 @@
               <p></p>
               <button
                 class="btn"
-                type="submit"
+                type="button"
                 onclick="sendMessage('whatsapp')"
                 data-form-btn=""
               >

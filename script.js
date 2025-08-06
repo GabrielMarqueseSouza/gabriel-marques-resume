@@ -273,6 +273,17 @@ const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
 let selectedRole = 'all';
 
+const breakHeading = () => {
+  const heading = document.querySelector('.profession-container h2');
+  if (!heading) return;
+
+  const words = heading.textContent.trim().split(' ');
+
+  if (words.length >= 2) {
+    heading.innerHTML = `${words[0]}<br>${words.slice(1).join(' ')}`;
+  }
+};
+
 const getTextTheme = () => {
   const theme = localStorage.getItem('theme');
 
@@ -376,6 +387,12 @@ const navSkills = document.getElementById('nav-skills');
 const navProjects = document.getElementById('nav-projects');
 const navContact = document.getElementById('nav-contactme');
 const navLinks = document.querySelectorAll('.navbar-container a');
+const menuToggle = document.querySelector('.menu-toggle');
+const navbarContainer = document.querySelector('.navbar-container');
+
+menuToggle.addEventListener('click', () => {
+  navbarContainer.classList.toggle('open');
+});
 
 let temporarilyDisableObserver = false;
 navLinks.forEach((link) => {
@@ -388,6 +405,8 @@ navLinks.forEach((link) => {
 
     navLinks.forEach((l) => l.classList.remove('active'));
     link.classList.add('active');
+
+    navbarContainer.classList.remove('open');
   });
 });
 
@@ -626,6 +645,7 @@ const setExperienceSection = (language) => {
 };
 
 setExperienceSection(savedLang);
+
 // ---- experience ----
 
 // ---- skills ----
@@ -1067,4 +1087,8 @@ if (savedLang) {
   setLanguage(savedLang);
   langDiv.classList.add(`lang-${savedLang}`);
   filterSkills(selectedRole, savedLang);
+}
+
+if (window.innerWidth <= 667) {
+  breakHeading();
 }
