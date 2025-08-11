@@ -286,11 +286,11 @@ html {
             }
 
             &.pt::before {
-              background: url('/resources/brasil.svg') center center no-repeat;
+              background: url('resources/brasil.svg') center center no-repeat;
             }
 
             &.en::before {
-              background: url('/resources/usa.svg') center center no-repeat;
+              background: url('resources/usa.svg') center center no-repeat;
             }
           }
 
