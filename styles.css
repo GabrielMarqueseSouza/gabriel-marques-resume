@@ -309,11 +309,11 @@ html {
     }
 
     #selected-lang.lang-pt::before {
-      background: url('/resources/brasil.svg') center center no-repeat;
+      background: url('resources/brasil.svg') center center no-repeat;
     }
 
     #selected-lang.lang-en::before {
-      background: url('/resources/usa.svg') center center no-repeat;
+      background: url('resources/usa.svg') center center no-repeat;
     }
   }
 

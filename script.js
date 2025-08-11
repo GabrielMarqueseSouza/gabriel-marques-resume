@@ -324,7 +324,7 @@ const getTheme = () => {
 };
 
 const systemPrefersDark = window.matchMedia(
-  '(prefers-color-scheme: dark)'
+  '(prefers-color-scheme: light)'
 ).matches;
 
 const switchThemeBtn = document.getElementById('theme-switch');
