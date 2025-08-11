@@ -284,6 +284,18 @@ const breakHeading = () => {
   }
 };
 
+const breakFormText = () => {
+  const formText = document.querySelector('.contact-text p');
+  if (!formText) return;
+
+  const words = formText.textContent.trim().split(' ');
+
+  const firstPart = words.slice(0, 6).join(' ');
+  const secondPart = words.slice(6).join(' ');
+
+  formText.innerHTML = `${firstPart}<br>${secondPart}`;
+};
+
 const getTextTheme = () => {
   const theme = localStorage.getItem('theme');
 
@@ -707,8 +719,7 @@ const observeSkillBars = () => {
 const filterSkills = (roleFilter, language) => {
   skillsContainer.innerHTML = '';
   skillBtns[0].innerHTML = language === 'pt' ? 'Todas' : 'All';
-  skillBtns[3].innerHTML =
-    language === 'pt' ? 'DevOps | Banco de Dados' : 'DevOps | Database';
+  skillBtns[3].innerHTML = 'DevOps | Database';
   skillBtns[4].innerHTML = language === 'pt' ? 'Teste' : 'Testing';
   skillBtns[6].innerHTML = language === 'pt' ? 'Ferramentas' : 'Tools';
   skillHeader.innerHTML =
@@ -1091,4 +1102,6 @@ if (savedLang) {
 
 if (window.innerWidth <= 667) {
   breakHeading();
+
+  breakFormText();
 }
