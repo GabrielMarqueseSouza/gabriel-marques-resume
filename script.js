@@ -272,6 +272,7 @@ const savedLang = localStorage.getItem('selectedLanguage');
 const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
 const langMenu = document.querySelector('.language-menu');
+const langLinks = langMenu.querySelectorAll('ul > li > a');
 let selectedRole = 'all';
 
 const breakHeading = () => {
@@ -1080,6 +1081,12 @@ langMenu.addEventListener('click', (e) => {
   }
 });
 
+langLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    langMenu.classList.remove('open');
+  });
+});
+
 languages.forEach((language) => {
   language.addEventListener('click', (e) => {
     e.preventDefault();
@@ -1088,8 +1095,6 @@ languages.forEach((language) => {
 
     langDiv.classList.remove('lang-pt', 'lang-en');
     langDiv.classList.add(`lang-${lang}`);
-
-    langMenu.classList.remove('open');
 
     setLanguage(lang);
     filterSkills(selectedRole, getCurrentLanguage());
