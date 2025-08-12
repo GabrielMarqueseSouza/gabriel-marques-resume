@@ -1091,10 +1091,12 @@ document.addEventListener('DOMContentLoaded', () => {
   setExperienceSection(savedLang);
   getContactFormText(savedLang);
 
-  langMenu.addEventListener('click', (e) => {
-    if (e.target.closest('a')) return;
-
-    langMenu.classList.toggle('open');
+  langMenu.addEventListener('click', () => {
+    if (langMenu.classList.contains('open')) {
+      langMenu.classList.remove('open');
+    } else {
+      langMenu.classList.toggle('open');
+    }
   });
 
   languages.forEach((language) => {
@@ -1106,7 +1108,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       langDiv.classList.remove('lang-pt', 'lang-en');
       langDiv.classList.add(`lang-${lang}`);
-      langMenu.classList.remove('open');
 
       localStorage.setItem('selectedLanguage', lang);
       setLanguage(lang);
