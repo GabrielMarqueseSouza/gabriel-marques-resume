@@ -1100,6 +1100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   languages.forEach((language) => {
     language.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
 
       const lang = language.id;
 
