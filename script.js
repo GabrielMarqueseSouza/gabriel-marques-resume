@@ -268,7 +268,7 @@ const data = {
 // ---- data ----
 
 // ---------------- global -------------------
-const savedLang = localStorage.getItem('selectedLanguage');
+let savedLang = localStorage.getItem('selectedLanguage');
 
 const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
