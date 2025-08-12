@@ -271,6 +271,7 @@ const data = {
 const savedLang = localStorage.getItem('selectedLanguage');
 const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
+const langMenu = document.querySelector('.language-menu');
 let selectedRole = 'all';
 
 const breakHeading = () => {
@@ -1072,6 +1073,12 @@ const setLanguage = (language) => {
   getContactFormText(language);
   setFooterText(language);
 };
+
+langMenu.addEventListener('click', (e) => {
+  if (e.target.closest('a')) return;
+
+  langMenu.classList.toggle('open');
+});
 
 languages.forEach((language) => {
   language.addEventListener('click', (e) => {

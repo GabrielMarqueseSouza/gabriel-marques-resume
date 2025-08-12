@@ -306,6 +306,13 @@ html {
         transform: translateY(0);
         visibility: visible;
       }
+
+      .open ul {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+      }
     }
 
     #selected-lang.lang-pt::before {
@@ -1505,8 +1512,9 @@ footer {
 
       &.open {
         transform: translateY(0);
-        z-index: 999;
+        z-index: 888;
         top: 70px;
+        width: fit-content;
       }
 
       a {
