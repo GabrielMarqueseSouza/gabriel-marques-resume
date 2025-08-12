@@ -325,7 +325,7 @@ const getTheme = () => {
 };
 
 const systemPrefersDark = window.matchMedia(
-  '(prefers-color-scheme: light)'
+  '(prefers-color-scheme: dark)'
 ).matches;
 
 const switchThemeBtn = document.getElementById('theme-switch');
@@ -1074,6 +1074,15 @@ const setLanguage = (language) => {
   setFooterText(language);
 };
 
+if (!savedLang) {
+  savedLang = 'pt';
+  localStorage.setItem('selectedLanguage', savedLang);
+} else {
+  setLanguage(savedLang);
+  langDiv.classList.add(`lang-${savedLang}`);
+  filterSkills(selectedRole, savedLang);
+}
+
 langMenu.addEventListener('click', (e) => {
   if (e.target.closest('a')) return;
 
@@ -1102,12 +1111,6 @@ languages.forEach((language) => {
     localStorage.setItem('selectedLanguage', lang);
   });
 });
-
-if (savedLang) {
-  setLanguage(savedLang);
-  langDiv.classList.add(`lang-${savedLang}`);
-  filterSkills(selectedRole, savedLang);
-}
 
 if (window.innerWidth <= 667) {
   breakHeading();
