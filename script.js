@@ -1092,11 +1092,7 @@ document.addEventListener('DOMContentLoaded', () => {
   getContactFormText(savedLang);
 
   langMenu.addEventListener('click', () => {
-    if (langMenu.classList.contains('open')) {
-      langMenu.classList.remove('open');
-    } else {
-      langMenu.classList.toggle('open');
-    }
+    langMenu.classList.toggle('open');
   });
 
   languages.forEach((language) => {
@@ -1119,6 +1115,12 @@ document.addEventListener('DOMContentLoaded', () => {
       getContactFormText(lang);
     });
   });
+});
+
+document.addEventListener('click', (e) => {
+  if (!langMenu.contains(e.target)) {
+    langMenu.classList.remove('open');
+  }
 });
 
 if (window.innerWidth <= 667) {
