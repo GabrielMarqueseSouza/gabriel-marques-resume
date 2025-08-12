@@ -269,6 +269,12 @@ const data = {
 
 // ---------------- global -------------------
 const savedLang = localStorage.getItem('selectedLanguage');
+
+if (!savedLang) {
+  savedLang = 'pt';
+  localStorage.setItem('selectedLanguage', savedLang);
+}
+
 const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
 const langMenu = document.querySelector('.language-menu');
@@ -1074,15 +1080,6 @@ const setLanguage = (language) => {
   setFooterText(language);
 };
 
-if (!savedLang) {
-  savedLang = 'pt';
-  localStorage.setItem('selectedLanguage', savedLang);
-} else {
-  setLanguage(savedLang);
-  langDiv.classList.add(`lang-${savedLang}`);
-  filterSkills(selectedRole, savedLang);
-}
-
 langMenu.addEventListener('click', (e) => {
   if (e.target.closest('a')) return;
 
@@ -1111,6 +1108,12 @@ languages.forEach((language) => {
     localStorage.setItem('selectedLanguage', lang);
   });
 });
+
+if (savedLang) {
+  setLanguage(savedLang);
+  langDiv.classList.add(`lang-${savedLang}`);
+  filterSkills(selectedRole, savedLang);
+}
 
 if (window.innerWidth <= 667) {
   breakHeading();
