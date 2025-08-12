@@ -270,11 +270,6 @@ const data = {
 // ---------------- global -------------------
 const savedLang = localStorage.getItem('selectedLanguage');
 
-if (!savedLang) {
-  savedLang = 'pt';
-  localStorage.setItem('selectedLanguage', savedLang);
-}
-
 const langDiv = document.getElementById('selected-lang');
 const languages = document.querySelectorAll('.language-menu a');
 const langMenu = document.querySelector('.language-menu');
@@ -1080,40 +1075,49 @@ const setLanguage = (language) => {
   setFooterText(language);
 };
 
-langMenu.addEventListener('click', (e) => {
-  if (e.target.closest('a')) return;
+document.addEventListener('DOMContentLoaded', () => {
+  if (!savedLang) {
+    savedLang = 'pt';
+    localStorage.setItem('selectedLanguage', savedLang);
+  }
 
-  langMenu.classList.toggle('open');
-});
+  langDiv.classList.remove('lang-pt', 'lang-en');
+  langDiv.classList.add(`lang-${savedLang}`);
+  setLanguage(savedLang);
+  filterSkills(selectedRole, savedLang);
+  setContactInfo(savedLang);
+  renderProjects(savedLang);
+  getHeroText(savedLang);
+  setExperienceSection(savedLang);
+  getContactFormText(savedLang);
 
-languages.forEach((language) => {
-  language.addEventListener('click', (e) => {
-    e.preventDefault();
+  langMenu.addEventListener('click', (e) => {
+    if (e.target.closest('a')) return;
 
-    const lang = language.id;
+    langMenu.classList.toggle('open');
+  });
 
-    langDiv.classList.remove('lang-pt', 'lang-en');
-    langDiv.classList.add(`lang-${lang}`);
+  languages.forEach((language) => {
+    language.addEventListener('click', (e) => {
+      e.preventDefault();
 
-    langMenu.classList.remove('open');
+      const lang = language.id;
 
-    setLanguage(lang);
-    filterSkills(selectedRole, getCurrentLanguage());
-    setContactInfo(getCurrentLanguage());
-    renderProjects(getCurrentLanguage());
-    getHeroText(getCurrentLanguage());
-    setExperienceSection(getCurrentLanguage());
-    getContactFormText(getCurrentLanguage());
+      langDiv.classList.remove('lang-pt', 'lang-en');
+      langDiv.classList.add(`lang-${lang}`);
+      langMenu.classList.remove('open');
 
-    localStorage.setItem('selectedLanguage', lang);
+      localStorage.setItem('selectedLanguage', lang);
+      setLanguage(lang);
+      filterSkills(selectedRole, lang);
+      setContactInfo(lang);
+      renderProjects(lang);
+      getHeroText(lang);
+      setExperienceSection(lang);
+      getContactFormText(lang);
+    });
   });
 });
-
-if (savedLang) {
-  setLanguage(savedLang);
-  langDiv.classList.add(`lang-${savedLang}`);
-  filterSkills(selectedRole, savedLang);
-}
 
 if (window.innerWidth <= 667) {
   breakHeading();
