@@ -1075,11 +1075,7 @@ const setLanguage = (language) => {
 };
 
 langMenu.addEventListener('click', (e) => {
-  if (e.target.closest('a')) return;
-
-  if (langMenu.classList.contains('open')) {
-    langMenu.classList.remove('open');
-  } else {
+  if (!e.target.closest('a')) {
     langMenu.classList.toggle('open');
   }
 });
@@ -1092,6 +1088,8 @@ languages.forEach((language) => {
 
     langDiv.classList.remove('lang-pt', 'lang-en');
     langDiv.classList.add(`lang-${lang}`);
+
+    langMenu.classList.remove('open');
 
     setLanguage(lang);
     filterSkills(selectedRole, getCurrentLanguage());
