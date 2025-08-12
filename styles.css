@@ -338,6 +338,7 @@ html {
     span {
       display: block;
       height: 3px;
+      width: 100%;
       background: var(--secondary-text-color);
       border-radius: 2px;
     }
@@ -1494,6 +1495,10 @@ footer {
       left: 2%;
       top: 50%;
       transform: translateY(-50%);
+
+      span {
+        background-color: var(--secondary-text-color, #fff);
+      }
     }
 
     .navbar-container {

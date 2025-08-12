@@ -1077,7 +1077,11 @@ const setLanguage = (language) => {
 langMenu.addEventListener('click', (e) => {
   if (e.target.closest('a')) return;
 
-  langMenu.classList.toggle('open');
+  if (langMenu.classList.contains('open')) {
+    langMenu.classList.remove('open');
+  } else {
+    langMenu.classList.toggle('open');
+  }
 });
 
 languages.forEach((language) => {
