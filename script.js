@@ -332,8 +332,10 @@ const systemPrefersDark = window.matchMedia(
 const switchThemeBtn = document.getElementById('theme-switch');
 
 const userTheme = getTheme();
+
 if (userTheme === 'dark' || (!userTheme && systemPrefersDark)) {
   document.body.classList.add('dark');
+  localStorage.setItem('theme', 'dark');
   switchThemeBtn.checked = true;
 }
 
