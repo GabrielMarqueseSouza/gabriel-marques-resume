@@ -87,8 +87,8 @@ const data = {
       type: 'Freelance',
       url: 'https://eload.com.br/',
       description: {
-        en: `Monolithic ASP.NET Core MVC application to monitor and evaluate athletes' performance,facilitating analysis, helping to make decisions forupcoming training sessions, improving athletes' performance and preventing injuries.`,
-        pt: `Aplicativo monolito, ASP.NET Core MVC, para monitorar e avaliar o desempenho dos atletas, facilitando a análise, ajudando a tomar decisões paraas próximas sessões de treinamento, melhorando o desempenhodos atletas e prevenindo lesões.`,
+        en: `Monolithic ASP.NET Core MVC application to monitor and evaluate athletes' performance,facilitating analysis, helping to make decisions for upcoming training sessions, improving athletes' performance and preventing injuries.`,
+        pt: `Aplicativo monolito, ASP.NET Core MVC, para monitorar e avaliar o desempenho dos atletas, facilitando a análise, ajudando a tomar decisões par aas próximas sessões de treinamento, melhorando o desempenhodos atletas e prevenindo lesões.`,
       },
       imageUrl: './resources/eload.ico',
     },
@@ -469,8 +469,8 @@ observeSections();
 const hero = document.getElementById('hero');
 const getHeroText = (language) => {
   hero.innerHTML = '';
-  const [h3, paragraph, scroll, scrollP, arrow, arrowSvg] = createElements([
-    'h3',
+  const [h1, paragraph, scroll, scrollP, arrow, arrowSvg] = createElements([
+    'h1',
     'p',
     'p',
     'div',
@@ -484,7 +484,7 @@ const getHeroText = (language) => {
       ? data.translations.pt.heroSection
       : data.translations.en.heroSection;
 
-  h3.innerText = translations.intro;
+  h1.innerText = translations.intro;
   paragraph.className = getTextTheme();
 
   paragraph.innerText = `${translations.firstParagraph} ${translations.secondParagraph}`;
@@ -492,7 +492,7 @@ const getHeroText = (language) => {
 
   scroll.className = 'scroll-down';
   arrow.className = 'arrow';
-  arrowSvg.innerHTML = `<svg viewBox="0 0 30 30 " 
+  arrowSvg.innerHTML = `<svg viewBox="0 0 30 30 "
               xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M 5.21875 6.6875 L 3.78125 8.09375 L 16 20.3125 L 28.21875 8.09375 L 26.78125 6.6875 L 16 17.46875 Z M 5.21875 13.6875 L 3.78125 15.09375 L 16 27.3125 L 28.21875 15.09375 L 26.78125 13.6875 L 16 24.46875 Z"
@@ -503,7 +503,7 @@ const getHeroText = (language) => {
   scroll.appendChild(scrollP);
   scroll.appendChild(arrow);
 
-  hero.appendChild(h3);
+  hero.appendChild(h1);
   hero.appendChild(paragraph);
   hero.appendChild(scroll);
 };
@@ -667,7 +667,7 @@ setExperienceSection(savedLang);
 // ---- skills ----
 const skillsContainer = document.getElementById('skill-list-container');
 const skillBtns = document.querySelectorAll('.btn');
-const skillHeader = document.querySelector('#skills h3');
+const skillHeader = document.querySelector('#skills h2');
 
 skillBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
@@ -723,8 +723,8 @@ const observeSkillBars = () => {
 const filterSkills = (roleFilter, language) => {
   skillsContainer.innerHTML = '';
   skillBtns[0].innerHTML = language === 'pt' ? 'Todas' : 'All';
-  skillBtns[3].innerHTML = 'DevOps | Database';
-  skillBtns[4].innerHTML = language === 'pt' ? 'Teste' : 'Testing';
+  skillBtns[3].innerHTML = language === 'pt' ? 'Teste' : 'Testing';
+  skillBtns[4].innerHTML = 'DevOps | Database';
   skillBtns[6].innerHTML = language === 'pt' ? 'Ferramentas' : 'Tools';
   skillHeader.innerHTML =
     language === 'pt' ? data.skills.title[1] : data.skills.title[0];
@@ -768,7 +768,7 @@ filterSkills('all', savedLang);
 // ---- skills ----
 
 // ---- projects ----
-const projectsHeader = document.querySelector('#projects h3');
+const projectsHeader = document.querySelector('#projects h2');
 const projectsContainer = document.querySelector('.project-container');
 const renderProjects = (language) => {
   projectsContainer.innerHTML = '';
@@ -981,6 +981,7 @@ const getAddressInfo = (language) => {
 
   addressSection.appendChild(icon);
   addressSection.appendChild(textContainer);
+  addressSection.appendChild(divider);
   contactSection.appendChild(addressSection);
 };
 
@@ -988,8 +989,8 @@ const setContactInfo = (language) => {
   contactSection.innerHTML = '';
 
   getPhoneInfo(language);
-  getEmailInfo();
   getAddressInfo(language);
+  getEmailInfo();
 };
 
 setContactInfo(savedLang);
@@ -1054,13 +1055,14 @@ function sendEmail(body, subject) {
 // ---- contact ----
 
 // ---- footer ----
+const footer = document.querySelector('footer');
 const setFooterText = (language) => {
   const text =
     language === 'pt' ? 'Todos os direitos reservados' : 'All Rights Reserved';
 
-  const footer = document.querySelector('footer');
   footer.className = getTextTheme();
-  footer.children[0].innerText = `2025, Gabriel Marques. ${text}.`;
+  const paragraph = footer.querySelector('p');
+  paragraph.innerText = `2025, Gabriel Marques. ${text}.`;
 };
 // ---- footer ----
 

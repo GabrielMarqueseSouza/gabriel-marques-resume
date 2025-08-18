@@ -17,13 +17,13 @@
   </head>
 
   <body class="portfolio-container">
-    <header id="home">
+    <header id="home" class="flex">
       <button class="menu-toggle">
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <nav class="navbar-container">
+      <nav class="navbar-container flex">
         <a href="#" id="nav-home">Home</a>
         <a href="#about" id="nav-about">About Me</a>
         <a href="#experience" id="nav-education">Education/Professional</a>
@@ -43,9 +43,9 @@
       </aside>
     </header>
     <section id="stars-container"></section>
-    <main class="content-container">
-      <section id="hero"></section>
-      <section id="about">
+    <main class="content-container flex">
+      <section id="hero" class="grid"></section>
+      <section id="about" class="flex container flex-wrap">
         <aside class="information-container">
           <div class="profile-pic">
             <img
@@ -147,36 +147,36 @@
           </section>
           <section id="personalInfoText" class="personal-info-text"></section>
         </aside>
-        <article id="aboutme" class="aboutme-container"></article>
+        <article id="aboutme" class="aboutme-container flex"></article>
       </section>
-      <section id="experience">
+      <section id="experience" class="container grid">
         <section class="profession-container"></section>
         <section class="education-container"></section>
       </section>
-      <section id="skills">
-        <h3>Skills</h3>
-        <section class="skills-container">
+      <section id="skills" class="container flex">
+        <h2>Skills</h2>
+        <section class="skills-container flex flex-wrap">
           <button id="all" class="btn"></button>
           <button id="frontend" class="btn">Frontend</button>
           <button id="backend" class="btn">Backend</button>
-          <button id="devops" class="btn">Devops | Database</button>
           <button id="test" class="btn"></button>
+          <button id="devops" class="btn">Devops | Database</button>
           <button id="softskills" class="btn">Soft Skills</button>
           <button id="tools" class="btn"></button>
         </section>
-        <section id="skill-list-container"></section>
+        <section id="skill-list-container" class="grid"></section>
       </section>
-      <section id="projects">
-        <h3></h3>
+      <section id="projects" class="container flex">
+        <h2></h2>
         <section class="project-container"></section>
       </section>
-      <section id="contact">
-        <section class="contact-form-container">
-          <div class="contact-text">
-            <h3></h3>
+      <section id="contact" class="container flex">
+        <section class="contact-form-container flex">
+          <div class="contact-text flex">
+            <h2></h2>
             <p></p>
           </div>
-          <form class="contact-form" data-form="">
+          <form class="contact-form flex" data-form="">
             <div class="name-email">
               <input type="text" name="fullname" data-form-input="" required />
               <input type="email" name="email" data-form-input="" required />
@@ -192,7 +192,7 @@
                 data-form-input=""
               ></textarea>
             </div>
-            <div class="contact-btns">
+            <div class="contact-btns flex">
               <button
                 class="btn"
                 type="button"
@@ -213,7 +213,7 @@
             </div>
           </form>
         </section>
-        <div class="available-contacts"></div>
+        <div class="available-contacts flex flex-wrap"></div>
       </section>
     </main>
     <footer>
