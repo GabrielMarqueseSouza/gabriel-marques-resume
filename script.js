@@ -265,7 +265,6 @@ const data = {
     },
   },
 };
-// ---- data ----
 
 // ---------------- global -------------------
 let savedLang = localStorage.getItem('selectedLanguage');
@@ -308,6 +307,21 @@ const getCurrentLanguage = () => {
   return langDiv.classList.contains('lang-pt') ? 'pt' : 'en';
 };
 
+const translate = (lang, path) => {
+  const translations = data.translations[lang] || data.translations.pt;
+  return path.split('.').reduce((acc, key) => acc[key], translations);
+};
+
+const renderTextList = (container, texts, className) => {
+  container.innerHTML = '';
+  texts.forEach((text) => {
+    const p = document.createElement('p');
+    p.className = className;
+    p.innerText = text.trim();
+    container.appendChild(p);
+  });
+};
+
 const createElement = (el) => {
   const element = document.createElement(el);
   return element;
@@ -321,17 +335,13 @@ const createElements = (elList) => {
   return elements;
 };
 
-const getTheme = () => {
-  return localStorage.getItem('theme');
-};
-
 const systemPrefersDark = window.matchMedia(
   '(prefers-color-scheme: dark)'
 ).matches;
 
 const switchThemeBtn = document.getElementById('theme-switch');
 
-const userTheme = getTheme();
+const userTheme = localStorage.getItem('theme');
 
 if (userTheme === 'dark' || (!userTheme && systemPrefersDark)) {
   document.body.classList.add('dark');
@@ -348,15 +358,7 @@ switchThemeBtn.addEventListener('change', () => {
     document.body.classList.remove('fade-theme');
   }, 700);
 
-  getHeroText(getCurrentLanguage());
-  getAboutMeText(getCurrentLanguage());
-  getPersonalInfoText(getCurrentLanguage());
-  filterSkills(selectedRole, getCurrentLanguage());
-  renderProjects(getCurrentLanguage());
-  getContactFormText(getCurrentLanguage());
-  setFooterText(getCurrentLanguage());
-  setExperienceSection(getCurrentLanguage(), getTextTheme());
-  setContactInfo(getCurrentLanguage());
+  updateUI();
 });
 
 const generateStars = () => {
@@ -392,8 +394,6 @@ const generateStars = () => {
 };
 
 generateStars();
-
-// ---------------- global -------------------
 
 // ---- navbar ----
 const navHome = document.getElementById('nav-home');
@@ -463,11 +463,12 @@ const observeSections = () => {
   });
 };
 observeSections();
-// ---- navbar ----
 
 // ---- hero ----
 const hero = document.getElementById('hero');
 const getHeroText = (language) => {
+  const heroText = translate(language, 'heroSection');
+
   hero.innerHTML = '';
   const [h1, paragraph, scroll, scrollP, arrow, arrowSvg] = createElements([
     'h1',
@@ -479,16 +480,11 @@ const getHeroText = (language) => {
     'svg',
   ]);
 
-  const translations =
-    language === 'pt'
-      ? data.translations.pt.heroSection
-      : data.translations.en.heroSection;
-
-  h1.innerText = translations.intro;
+  h1.innerText = heroText.intro;
   paragraph.className = getTextTheme();
 
-  paragraph.innerText = `${translations.firstParagraph} ${translations.secondParagraph}`;
-  scrollP.innerText = translations.scroll;
+  paragraph.innerText = `${heroText.firstParagraph} ${heroText.secondParagraph}`;
+  scrollP.innerText = heroText.scroll;
 
   scroll.className = 'scroll-down';
   arrow.className = 'arrow';
@@ -509,160 +505,86 @@ const getHeroText = (language) => {
 };
 
 getHeroText(savedLang);
-// ---- hero ----
 
 // ---- about ----
 const personalInfoText = document.getElementById('personalInfoText');
 const aboutMe = document.getElementById('aboutme');
 
-const createParagraphs = (paragraph, className) => {
-  const pTag = createElement('p');
-
-  if (className) {
-    pTag.className = className;
-  }
-
-  pTag.innerText = paragraph.trim();
-  return pTag;
-};
-
 const getAboutMeText = (language) => {
-  aboutMe.innerHTML = '';
-
-  language === 'pt'
-    ? data.translations.pt.aboutMeText.forEach((p) => {
-        const pTag = createParagraphs(p, getTextTheme());
-
-        aboutMe.appendChild(pTag);
-      })
-    : data.translations.en.aboutMeText.forEach((p) => {
-        const pTag = createParagraphs(p, getTextTheme());
-
-        aboutMe.appendChild(pTag);
-      });
+  renderTextList(aboutMe, translate(language, 'aboutMeText'), getTextTheme());
 };
 
 const getPersonalInfoText = (language) => {
-  personalInfoText.innerHTML = '';
-
-  language === 'pt'
-    ? data.translations.pt.personalInfoText.forEach((p) => {
-        const pTag = createParagraphs(p, getTextTheme());
-        personalInfoText.appendChild(pTag);
-      })
-    : data.translations.en.personalInfoText.forEach((p) => {
-        const pTag = createParagraphs(p, getTextTheme());
-        personalInfoText.appendChild(pTag);
-      });
+  renderTextList(
+    personalInfoText,
+    translate(language, 'personalInfoText'),
+    getTextTheme()
+  );
 };
-// ---- about ----
 
 // ---- experience ----
-const experience = document.getElementById('experience');
 const professionContainer = document.querySelector('.profession-container');
 const educationContainer = document.querySelector('.education-container');
 
-const getExperience = (language) => {
-  const translations =
-    language === 'pt'
-      ? data.translations.pt.xpSection
-      : data.translations.en.xpSection;
-
-  const header = createElement('h2');
-  header.innerText = translations.headings[0];
-
-  professionContainer.appendChild(header);
-
+const renderCards = (container, items, fields, header) => {
+  container.innerHTML = '';
+  container.appendChild(header);
   const theme = getTextTheme();
 
-  translations.jobs.forEach((job) => {
-    const [card, role, company, summary, date] = createElements([
-      'article',
-      'p',
-      'p',
-      'p',
-      'p',
-    ]);
-
+  items.forEach((item) => {
+    const card = document.createElement('article');
     card.className = 'card';
-
-    role.className = `role ${theme}`;
-    role.innerText = job.job;
-
-    company.className = `company ${theme}`;
-    company.innerText = job.company;
-
-    summary.className = `role-summary ${theme}`;
-    summary.innerText = job.summary;
-
-    date.className = `start-end-date ${theme}`;
-    date.innerText = job.date;
-
-    card.appendChild(role);
-    card.appendChild(company);
-    card.appendChild(summary);
-    card.appendChild(date);
-
-    professionContainer.appendChild(card);
+    fields.forEach(([key, cls]) => {
+      const p = document.createElement('p');
+      p.className = `${cls} ${theme}`;
+      p.innerText = item[key];
+      card.appendChild(p);
+    });
+    container.appendChild(card);
   });
+};
 
-  experience.appendChild(professionContainer);
+const getExperience = (language) => {
+  const xpSection = translate(language, 'xpSection');
+  const header = createElement('h2');
+  header.innerText = xpSection.headings[0];
+
+  renderCards(
+    professionContainer,
+    xpSection.jobs,
+    [
+      ['job', 'role'],
+      ['company', 'company'],
+      ['summary', 'role-summary'],
+      ['date', 'start-end-date'],
+    ],
+    header
+  );
 };
 
 const getEducation = (language) => {
-  const translations =
-    language === 'pt'
-      ? data.translations.pt.xpSection
-      : data.translations.en.xpSection;
-
+  const xpSection = translate(language, 'xpSection');
   const header = createElement('h2');
-  header.innerText = translations.headings[1];
+  header.innerText = xpSection.headings[1];
 
-  educationContainer.appendChild(header);
-
-  const theme = getTextTheme();
-
-  translations.graduations.forEach((grad) => {
-    const [card, university, graduation, date] = createElements([
-      'article',
-      'p',
-      'p',
-      'p',
-    ]);
-
-    card.className = 'card';
-
-    university.className = `university ${theme}`;
-    university.innerText = grad.university;
-
-    graduation.className = `graduation-field ${theme}`;
-    graduation.innerText = grad.graduation;
-
-    date.className = `graduation-date ${theme}`;
-    date.innerText = grad.gradDate;
-
-    card.appendChild(university);
-    card.appendChild(graduation);
-    card.appendChild(date);
-
-    educationContainer.appendChild(card);
-  });
-
-  experience.appendChild(educationContainer);
+  renderCards(
+    educationContainer,
+    xpSection.graduations,
+    [
+      ['university', 'university'],
+      ['graduation', 'graduation-field'],
+      ['gradDate', 'graduation-date'],
+    ],
+    header
+  );
 };
 
 const setExperienceSection = (language) => {
-  experience.innerHTML = '';
-  professionContainer.innerHTML = '';
-  educationContainer.innerHTML = '';
-
   getExperience(language);
   getEducation(language);
 };
 
 setExperienceSection(savedLang);
-
-// ---- experience ----
 
 // ---- skills ----
 const skillsContainer = document.getElementById('skill-list-container');
@@ -765,7 +687,6 @@ const filterSkills = (roleFilter, language) => {
 };
 
 filterSkills('all', savedLang);
-// ---- skills ----
 
 // ---- projects ----
 const projectsHeader = document.querySelector('#projects h2');
@@ -827,38 +748,34 @@ const renderProjects = (language) => {
 };
 
 renderProjects(savedLang);
-// ---- projects ----
 
 // ---- contact ----
 const getContactFormText = (language) => {
   const textTheme = getTextTheme();
-  const translations =
-    language === 'pt'
-      ? data.translations.pt.contactForm
-      : data.translations.en.contactForm;
+  const contactForm = translate(language, 'contactForm');
 
   const contactFormText = document.querySelector('.contact-text');
-  contactFormText.children[0].innerText = translations.headings[0];
-  contactFormText.children[1].innerText = translations.headings[1];
+  contactFormText.children[0].innerText = contactForm.headings[0];
+  contactFormText.children[1].innerText = contactForm.headings[1];
   contactFormText.children[1].className = textTheme;
 
   const nameEmail = document.querySelectorAll('.name-email input');
-  nameEmail[0].placeholder = translations.placeHolders.name;
-  nameEmail[1].placeholder = translations.placeHolders.email;
+  nameEmail[0].placeholder = contactForm.placeHolders.name;
+  nameEmail[1].placeholder = contactForm.placeHolders.email;
 
   const subject = document.querySelector('.subject input');
-  subject.placeholder = translations.placeHolders.subject;
+  subject.placeholder = contactForm.placeHolders.subject;
 
   const message = document.querySelector('.message textarea');
-  message.placeholder = translations.placeHolders.message;
+  message.placeholder = contactForm.placeHolders.message;
 
   const buttons = document.querySelector('.contact-btns');
-  buttons.children[0].innerText = translations.placeHolders.buttons[0];
+  buttons.children[0].innerText = contactForm.placeHolders.buttons[0];
 
   buttons.children[1].innerText = language === 'pt' ? 'ou' : 'or';
   buttons.children[1].className = textTheme;
 
-  buttons.children[2].innerText = translations.placeHolders.buttons[1];
+  buttons.children[2].innerText = contactForm.placeHolders.buttons[1];
 };
 
 getContactFormText(savedLang);
@@ -994,11 +911,12 @@ const setContactInfo = (language) => {
 };
 
 setContactInfo(savedLang);
-// -- available contacts --
-// ---- whatsapp and email buttons ----
+
+// ---- form elements ----
 const form = document.querySelector('[data-form]');
 const inputs = document.querySelectorAll('[data-form-input]');
 const formBtns = form.querySelectorAll('[data-form-btn]');
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const checkFormValidity = () => {
   const allFilled = Array.from(inputs).every(
@@ -1017,8 +935,13 @@ function sendMessage(channel) {
   const email = document.querySelector('[name="email"]').value;
   const subject = document.querySelector('[name="subject"]').value;
   const message = document.querySelector('[name="message-description"]').value;
-
   const language = getCurrentLanguage();
+
+  if (!name || !email || !subject || !message) return;
+  if (!emailRegex.test(email)) {
+    alert(language === 'pt' ? 'Email inválido.' : 'Invalid email.');
+    return;
+  }
 
   let formattedMessage = '';
   if (language === 'pt') {
@@ -1051,8 +974,6 @@ function sendEmail(body, subject) {
 
   window.location.href = mailtoLink;
 }
-// ---- whatsapp and email ----
-// ---- contact ----
 
 // ---- footer ----
 const footer = document.querySelector('footer');
@@ -1064,36 +985,33 @@ const setFooterText = (language) => {
   const paragraph = footer.querySelector('p');
   paragraph.innerText = `2025, Gabriel Marques. ${text}.`;
 };
-// ---- footer ----
 
 const setLanguage = (language) => {
-  aboutMe.innerHTML = '';
-  personalInfoText.innerHTML = '';
-
-  getNavBarText(language);
-  getAboutMeText(language);
-  getPersonalInfoText(language);
-  getHeroText(language);
-  setExperienceSection(language);
-  getContactFormText(language);
-  setFooterText(language);
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (!savedLang) {
-    savedLang = 'pt';
-    localStorage.setItem('selectedLanguage', savedLang);
-  }
+  savedLang = language;
+  localStorage.setItem('selectedLanguage', savedLang);
 
   langDiv.classList.remove('lang-pt', 'lang-en');
   langDiv.classList.add(`lang-${savedLang}`);
-  setLanguage(savedLang);
-  filterSkills(selectedRole, savedLang);
-  setContactInfo(savedLang);
-  renderProjects(savedLang);
-  getHeroText(savedLang);
-  setExperienceSection(savedLang);
-  getContactFormText(savedLang);
+
+  updateUI(language);
+};
+
+const updateUI = (language = getCurrentLanguage(), role = selectedRole) => {
+  getNavBarText(language);
+  getHeroText(language);
+  getAboutMeText(language);
+  getPersonalInfoText(language);
+  setExperienceSection(language);
+  getContactFormText(language);
+  setFooterText(language);
+  setContactInfo(language);
+  renderProjects(language);
+  filterSkills(role, language);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!savedLang) setLanguage('pt');
+  else setLanguage(savedLang);
 
   langMenu.addEventListener('click', () => {
     langMenu.classList.toggle('open');
@@ -1104,21 +1022,14 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       e.stopPropagation();
 
-      const lang = language.id;
-
-      langDiv.classList.remove('lang-pt', 'lang-en');
-      langDiv.classList.add(`lang-${lang}`);
-
-      localStorage.setItem('selectedLanguage', lang);
-      setLanguage(lang);
-      filterSkills(selectedRole, lang);
-      setContactInfo(lang);
-      renderProjects(lang);
-      getHeroText(lang);
-      setExperienceSection(lang);
-      getContactFormText(lang);
+      setLanguage(language.id);
     });
   });
+
+  if (window.innerWidth <= 667) {
+    breakHeading();
+    breakFormText();
+  }
 });
 
 document.addEventListener('click', (e) => {
@@ -1126,9 +1037,3 @@ document.addEventListener('click', (e) => {
     langMenu.classList.remove('open');
   }
 });
-
-if (window.innerWidth <= 667) {
-  breakHeading();
-
-  breakFormText();
-}
